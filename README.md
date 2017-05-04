@@ -23,3 +23,12 @@ Install XCode from AppStore. Install the deploy-thing with command "npm install 
 "brew install cocoapods"
 
 "pod setup"
+
+## Styling Semantic-ui
+All the stuff is in www/semantic
+
+Color variable is in src/site/globals/site.variables
+
+element styling is in src/site/elements/
+
+To reapply styling, go into semantic/ and run "gulp build"
