@@ -18,7 +18,7 @@
     under the License.
 -->
 <html>
-    <head>
+<head>
         <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
             https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
@@ -27,7 +27,7 @@
             * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
+            -->
         <!--
         //TODO, this is security that is really good, but right now gives us problems includeing css and js
         meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"-->
@@ -45,9 +45,10 @@
         <title>Hello World</title>
     </head>
     <body>
-        <h3>SOEMTHING</h3>
-
+        <div id="map"></div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script src="https://code.jquery.com/jquery.js"></script> 
+        <script async defer src="https://maps.googleapis.com/maps/api/js?v=3.exp&callback=initMap"></script>
     </body>
-</html>
+    </html>
