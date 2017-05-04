@@ -60,4 +60,12 @@ initMap = function() {
   });
 }
 
+$('.ui.sidebar').first()
+  .sidebar('setting', 'transition', 'overlay')
+  .sidebar('setting', 'mobileTransition', 'overlay')
+  .sidebar('attach events', '#sidebarToggle');
+
+$("#sidebarToggle")
+  .removeClass('disabled');
+
 app.initialize();
