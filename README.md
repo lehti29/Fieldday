@@ -10,13 +10,14 @@ install cordova using "npm install -g cordova"
 
 Check requirements using "cordova requirements"
 
+If your platforms and plugins folder got deleted (we don't track them), use the command "cordova prepare" which loads data from config.xml and installs the stuff we need, as long as someone installed them with the "--save" flag.
+
 ### OSX
 #### Android dev tools
 Download dev-tools from [developer-android](https://developer.android.com/studio/index.html), they are at the bottom unless you want entire android studio.
 
 #### IOS
 Install XCode from AppStore. Install the deploy-thing with command "npm install -g ios-deploy".
-export ANDROID_HOME=/usr/local/share/android-sdk
 
 #### Cocoapods
 "brew install cocoapods"
