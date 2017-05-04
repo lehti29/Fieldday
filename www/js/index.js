@@ -32,22 +32,23 @@
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-    /*
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+        /*
+            var parentElement = document.getElementById(id);
+            var listeningElement = parentElement.querySelector('.listening');
+            var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-    }*/
+            listeningElement.setAttribute('style', 'display:none;');
+            receivedElement.setAttribute('style', 'display:block;');
+        }*/
 
 
-    if (id == 'deviceready'){
-        this.initMap();
+        if (id == 'deviceready'){
+            initMap();
+        }
     }
-},
+};
 
-initMap: function() {
+initMap = function() {
     var uluru = {lat: -25.363, lng: 131.044};
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 4,
@@ -58,6 +59,5 @@ initMap: function() {
       map: map
   });
 }
-};
 
 app.initialize();
