@@ -1,39 +1,41 @@
-"person" : [
-	{
-		"person_id" : 1,
-		"name" : "Angelina",
-		"mail" : "anvg@kth.se",
-		"groups" : [2]
-	},
-	{
-		"person_id" : 2,
-		"name" : "Rasmus",
-		"mail" : "rasmuf@kth.se",
-		"groups" : [1, 2]
-	},
-	{
-		"person_id" : 3,
-		"name" : "Emil",
-		"mail" : "lehti@kth.se",
-		"groups" : [1]
-	},
-	{
-		"person_id" : 4,
-		"name" : "Erik",
-		"mail" : "erik@kth.se",
-		"groups" : [1, 2]
-	}
-]
+{
+	"person" : [
+		{
+			"person_id" : 1,
+			"name" : "Angelina",
+			"mail" : "anvg@kth.se",
+			"groups" : [2]
+		},
+		{
+			"person_id" : 2,
+			"name" : "Rasmus",
+			"mail" : "rasmuf@kth.se",
+			"groups" : [1, 2]
+		},
+		{
+			"person_id" : 3,
+			"name" : "Emil",
+			"mail" : "lehti@kth.se",
+			"groups" : [1]
+		},
+		{
+			"person_id" : 4,
+			"name" : "Erik",
+			"mail" : "erik@kth.se",
+			"groups" : [1, 2]
+		}
+	],
 
-"group" : [
-	{
-		"group_id" : 1,
-		"members" : [2, 3, 4],
-		"admins" : [3]
-	},
-	{
-		"group_id" : 2,
-		"members" : [1, 2, 4],
-		"admins" : [2]
-	}
-]
+	"group" : [
+		{
+			"group_id" : 1,
+			"members" : [2, 3, 4],
+			"admins" : [3]
+		},
+		{
+			"group_id" : 2,
+			"members" : [1, 2, 4],
+			"admins" : [2]
+		}
+	]
+}
