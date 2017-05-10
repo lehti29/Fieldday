@@ -8,10 +8,19 @@ firebase.initializeApp(config);
 
 // Get a reference to the database service
 var database = firebase.database();
+var usersRef = firebase.database().ref("users");
 
-console.log(database)
-
-firebase.database().ref('users/' + 1).set({
-  username: "Rasmus",
-  email: "rasmuf@kth.se"
+usersRef.on("value", function(snapshot) {
+  var users = snapshot.val();
+  for (var i = 1; i <= 10; i++) {
+    firebase.database().ref('users/' + i).set({
+      userid: i,
+      username: "Rasmus",
+      email: "rasmuf@kth.se"
+    });
+  }
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
 });
+
+
