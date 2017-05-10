@@ -7,3 +7,24 @@
     width: 100%;
     height: 100%;
 }
+
+#sidebarToggle {
+	display: block;
+    float: left;  
+    z-index: 3;
+    position: absolute; /*newly added*/
+    left: 5px; /*newly added*/
+    top: 5px;/*newly added*/
+}
+
+#userView {
+	width: 100%;
+	height: 20vh;
+	border:none;
+	padding: 1em;
+	background: linear-gradient(to bottom right, #960018, red, orange);
+}
+
+#userView .grid {
+	margin:0;
+}
