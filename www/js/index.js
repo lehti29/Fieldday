@@ -48,9 +48,10 @@
     }
 };
 
+var markers = [];
 initMap = function() {
     var uluru = {lat: -25.363, lng: 131.044};
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
       zoom: 4,
       center: uluru
   });
@@ -58,6 +59,33 @@ initMap = function() {
       position: uluru,
       map: map
   });
+}
+newMarker = function(lat, lng, userid) {
+  console.log("lat: " + lat + " lng: " + lng);
+  var newMarker = new google.maps.Marker({
+      position: {lat: parseFloat(lat), lng: parseFloat(lng)},
+      map: map,
+      title: JSON.stringify(userid)
+  });
+  //markers.add(newMarker);
+}
+deleteMarker = function(lat, lng, userid){
+  //newMarker.setMap(null);
+  //markers.delete(newMarker);
+}
+updateMarker = function(lat, lng, userid){
+  //newMarker.setMap(null);
+  //markers.delete(newMarker);
+  newMarker(lat, lng, userid);
+}
+sharePos = function(){
+    var geoSuccess = function(position) {
+    startPos = position;
+    console.log("lat: ", startPos.coords.latitude, " lng: ", startPos.coords.longitude);
+    //FIX HARDCODED USER
+    updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
+  };
+  navigator.geolocation.getCurrentPosition(geoSuccess);
 }
 
 $('.ui.sidebar').first()
