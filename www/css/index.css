@@ -8,11 +8,12 @@
     height: 100%;
 }
 
-.iconButtons {
+.ui.icon.button.iconButtons {
     z-index: 3;
     position: absolute;
 	float: left;
-	left: 5px;
+	left: 10px;
+	padding: 0;
 }
 
 button.ui.icon.largerButtons {
@@ -21,8 +22,12 @@ button.ui.icon.largerButtons {
     font-size: 18px;
 }
 
+.bottomLeft {
+	bottom: 30px;
+}
+
 #sidebarToggle {
-    top: 5px;
+    top: 10px;
 }
 
 #userView {
@@ -51,4 +56,8 @@ button.ui.icon.largerButtons {
 .ui.vertical.menu .item > i.left.aligned.icon {
   float: left;
   margin: 0 .5em 0 -10px;
+}
+
+#sharePos {
+	margin: auto;
 }

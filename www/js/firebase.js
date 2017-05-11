@@ -22,5 +22,50 @@ usersRef.on("value", function(snapshot) {
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
 });
+// Get a reference to the database service
+var database = firebase.database();
+var coordsRef = firebase.database().ref("coords");
 
+coordsRef.on("value", function(snapshot) {
+  var users = snapshot.val();
+  for (var i = 1; i <= 1; i++) {
+    firebase.database().ref('coords/' + i).set({
+      userid: i,
+      lat: "59.329323",
+      lng: "18.068581"
+    });
+  }
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+}); 
 
+coordsRef.on("child_added", function(snapshot) {
+  var lat = snapshot.val().lat;
+  var lng = snapshot.val().lng;
+  var userid = snapshot.val().userid
+  console.log("added ", snapshot.val());
+  newMarker(lat, lng, userid);
+});
+coordsRef.on("child_changed", function(snapshot) {
+  var lat = snapshot.val().lat;
+  var lng = snapshot.val().lng;
+  var userid = snapshot.val().userid
+  console.log("changed ", snapshot.val());
+  deleteMarker(lat, lng, userid);
+});
+coordsRef.on("child_removed", function(snapshot) {
+  var lat = snapshot.val().lat;
+  var lng = snapshot.val().lng;
+  var userid = snapshot.val().userid
+  console.log("removed ", snapshot.val());
+  updateMarker(lat, lng, userid);
+});
+
+function updatePosition(lat, lng, userid){
+  console.log("Updating in firebase: ", lat, lng, userid);
+  firebase.database().ref('coords/' + userid).set({
+    userid: userid,
+    lat: JSON.stringify(lat),
+    lng: JSON.stringify(lng)
+  });
+}
