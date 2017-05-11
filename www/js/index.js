@@ -42,45 +42,48 @@
 
 
         if (id == 'deviceready'){
-            //initMap();
+            initMap();
         }
     }
 };
-/*
+
 var markers = [];
 initMap = function() {
-    var uluru = {lat: -25.363, lng: 131.044};
+    var sthlm = {lat: 59.337479, lng: 18.072797};
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
-      center: uluru,
+      zoom: 14,
+      center: sthlm,
       mapTypeControl: true, //moves the type buttons to the center
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
         position: google.maps.ControlPosition.TOP_CENTER
       }
     });
-    var marker = new google.maps.Marker({
-      position: uluru,
-      map: map
-  });
 }
 newMarker = function(lat, lng, userid) {
   console.log("lat: " + lat + " lng: " + lng);
   var newMarker = new google.maps.Marker({
       position: {lat: parseFloat(lat), lng: parseFloat(lng)},
       map: map,
+      animation: google.maps.Animation.DROP,
       title: JSON.stringify(userid)
   });
-  //markers.add(newMarker);
+  markers.push({"userid" : userid, "marker" : newMarker});
 }
 deleteMarker = function(lat, lng, userid){
   //newMarker.setMap(null);
   //markers.delete(newMarker);
 }
 updateMarker = function(lat, lng, userid){
-  //newMarker.setMap(null);
-  //markers.delete(newMarker);
-  newMarker(lat, lng, userid);
+  console.log("inside updateMarker");
+  var result = $.grep(markers, function(e){ return e.userid === userid; });
+  if(result.length == 1){
+    console.log("result.length ", result.length);
+    console.log("prevmarker: ", result[0].marker, " user: ", result[0].userid);
+    var previousMarker = result[0].marker;
+    var updated = new google.maps.LatLng(59.347715, 18.075412);
+    previousMarker.setPosition(updated);
+  }
 }
 sharePos = function(){
     var geoSuccess = function(position) {
@@ -91,7 +94,12 @@ sharePos = function(){
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
-*/
+/*newPos = function(){
+  console.log("new");
+  var position = {"lat: ", "59.332051", "lng: ", "18.098031"};
+  updatePosition("59.332051", "18.098031", 5);
+}*/
+
 $('.ui.sidebar').first()
   .sidebar('setting', 'transition', 'overlay')
   .sidebar('setting', 'mobileTransition', 'overlay')

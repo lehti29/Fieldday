@@ -19,19 +19,19 @@ if (!myUuid) {
 
 // Initialize map
 var map = L.mapbox.map('map', config.mapbox.mapId, {
-  zoomControl: false,
+  zoomControl: true,
   attributionControl: false,
   tileLayer: {
-    maxNativeZoom: 15
+    maxNativeZoom: 22
   }
-}).setView([48.861920, 2.341755], 18)
+}).setView([48.861920, 2.341755], 16)
 
 // Stupid routing
 //var mapId = "grupp1";
 console.log("loc: ", location);
 console.log("hash: ", location.hash);
 var mapId = location.hash;
-mapId = mapId.substr(1);
+//mapId = mapId.substr(1);
 if (!mapId) {
   mapId = (Math.random() + 1).toString(36).substring(2, 12);
   location.hash = mapId;
@@ -40,7 +40,7 @@ console.log("hash2: ", location.hash);
 
 // Firebase
 var firebase = new Firebase('https://' + config.firebase + '.firebaseio.com/');
-var markersRef = firebase.child('maps/' + mapId);
+var markersRef = firebase.child('maps/grupp1');
 var markers = {};
 
 function addPoint(uuid, position) {
