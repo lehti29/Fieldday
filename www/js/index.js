@@ -93,17 +93,26 @@ sharePos = function(){
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
 
-$('.ui.sidebar').first()
-  .sidebar('setting', 'transition', 'overlay')
-  .sidebar('setting', 'mobileTransition', 'overlay')
-  .sidebar('attach events', '#sidebarToggle');
-
-$("#sidebarToggle")
-  .removeClass('disabled');
-
 var displaygroup = [];
 
-$('.checkbox').checkbox().checkbox({
+function initSidebar() {
+  $('.ui.sidebar').first()
+    .sidebar('setting', 'transition', 'overlay')
+    .sidebar('setting', 'mobileTransition', 'overlay')
+    .sidebar('attach events', '#sidebarToggle');
+
+  $("#sidebarToggle")
+    .removeClass('disabled');
+
+  var groups = [1, 2, 4];
+
+  groups.forEach((group)=>{
+    var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
+      group, '"><label for="group', group, '">Group ', group, '</label></div></div>'].join("");
+    $('#groupBoxes').append(div);
+  });
+  
+  $('.checkbox').checkbox().checkbox({
     onChecked: function() {
       displaygroup.push(this.id)
     },
@@ -112,10 +121,12 @@ $('.checkbox').checkbox().checkbox({
       displaygroup.splice(pos, 1); //removes 1 item on index pos
     },
     onChange: function() {
-      var childCheckbox  = this.id;
-      console.log("Change called on child: ", childCheckbox, ' with displaygroup: ', displaygroup);
+      console.log("Change called on child: ", this.id, ' with displaygroup: ', displaygroup);
     }
-  })
-;
+  });
+}
+
+initSidebar();
+
 
 app.initialize();
