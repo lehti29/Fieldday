@@ -8,23 +8,47 @@
     height: 100%;
 }
 
-#sidebarToggle {
-	display: block;
-    float: left;  
+.iconButtons {
     z-index: 3;
-    position: absolute; /*newly added*/
-    left: 5px; /*newly added*/
-    top: 5px;/*newly added*/
+    position: absolute;
+	float: left;
+	left: 5px;
+}
+
+button.ui.icon.largerButtons {
+    width: 46px;
+    height: 46px;
+    font-size: 18px;
+}
+
+#sidebarToggle {
+    top: 5px;
 }
 
 #userView {
-	width: 100%;
-	height: 20vh;
+	width: 260px;
+	max-height: 20vh;
 	border:none;
+	left:-1px;
+	top:-1px;
 	padding: 1em;
 	background: linear-gradient(to bottom right, #960018, red, orange);
 }
 
 #userView .grid {
 	margin:0;
+}
+
+#groupBoxes {
+	margin-left:20px; margin-top:10px;
+}
+
+.menu.sidebar div.item.listItem {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.ui.vertical.menu .item > i.left.aligned.icon {
+  float: left;
+  margin: 0 .5em 0 -10px;
 }

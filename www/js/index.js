@@ -73,4 +73,21 @@ $('.ui.sidebar').first()
 $("#sidebarToggle")
   .removeClass('disabled');
 
+var displaygroup = [];
+
+$('.checkbox').checkbox().checkbox({
+    onChecked: function() {
+      displaygroup.push(this.id)
+    },
+    onUnchecked: function() {
+      var pos = displaygroup.indexOf(this.id);
+      displaygroup.splice(pos, 1); //removes 1 item on index pos
+    },
+    onChange: function() {
+      var childCheckbox  = this.id;
+      console.log("Change called on child: ", childCheckbox, ' with displaygroup: ', displaygroup);
+    }
+  })
+;
+
 app.initialize();
