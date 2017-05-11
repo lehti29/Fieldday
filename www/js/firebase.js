@@ -9,25 +9,92 @@ firebase.initializeApp(config);
 // Get a reference to the database service
 var database = firebase.database();
 var usersRef = firebase.database().ref("users");
-
-usersRef.on("value", function(snapshot) {
-  var users = snapshot.val();
-  for (var i = 1; i <= 10; i++) {
-    firebase.database().ref('users/' + i).set({
-      userid: i,
-      username: "Rasmus",
-      email: "rasmuf@kth.se"
-    });
-  }
-}, function (errorObject) {
-  console.log("The read failed: " + errorObject.code);
-});
-// Get a reference to the database service
-var database = firebase.database();
+var groupsRef = firebase.database().ref("groups");
 var coordsRef = firebase.database().ref("coords");
+
+//Add a user to the database
+this.addUser = function(userId, username, password, groups, image) {
+  usersRef.push({
+    userId: userId,
+    username: username,
+    password: password,
+    groups: groups,
+    image: image
+  });
+};
+
+//Checks whether or not the user is in the database and if the password is correct
+this.checkUser = function(username, password) {
+  var promise = new Promise(function(resolve, reject) {
+    usersRef.on("value", function(snapshot) {
+      var userExist = false;
+      var users = snapshot.val();
+
+      for (var i = 0; i < Object.keys(users).length; i++) {
+        if(Object.values(users)[i].username == username && Object.values(users)[i].password == password)
+          userExist = true;
+      }
+
+      if (userExist != null) {
+        resolve(userExist);
+      }
+      else {
+        reject(Error("It broke"));
+      }
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }); 
+  });
+
+  promise.then(function(result) {
+    if(result)
+      console.log("Logged in");
+    else
+      console.log("Wrong username or password, try again");
+  }, function(err) {
+    console.log(err);
+  });
+}
+
+//Add a group
+addGroup = function(groupId, groupUsers, admin) {
+  groupsRef.push({
+    groupId: groupId,
+    groupUsers: groupUsers,
+    admin: admin
+  });
+};
+
+//Add a users position
+addUsersCoords = function(userId, lat, lng) {
+  coordsRef.push({
+    userId: userId,
+    lat: lat,
+    lng: lng
+  });
+};
+
+//Add a user to a group
+addUserToGroup = function(groupId, userId) {
+  var groupRef = firebase.database().ref("groups/"+groupId+"/groupUsers");
+  groupsRef.push({
+    userId: userId;
+  });
+
+  var userGroupRef = firebase.database().ref("users/"+userId+"/groups");
+  groupsRef.push({
+    groupId: groupId;
+  });
+};
+
+// this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
+// checkUser("rasmuf","hej");
+
+
 
 coordsRef.on("value", function(snapshot) {
   var users = snapshot.val();
+  console.log(users);
   for (var i = 4; i <= 4; i++) {
     firebase.database().ref('coords/' + i).set({
       userid: i,
