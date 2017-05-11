@@ -81,24 +81,24 @@ updateMarker = function(lat, lng, userid){
     console.log("result.length ", result.length);
     console.log("prevmarker: ", result[0].marker, " user: ", result[0].userid);
     var previousMarker = result[0].marker;
-    var updated = new google.maps.LatLng(59.347715, 18.075412);
+    var updated = new google.maps.LatLng(lat, lng);
     previousMarker.setPosition(updated);
   }
+  else if(result.length == 0){
+    console.log("No Marker from that user was found");
+  }
+  else console.log("More than one marker from that user was found");
 }
 sharePos = function(){
     var geoSuccess = function(position) {
     startPos = position;
     console.log("lat: ", startPos.coords.latitude, " lng: ", startPos.coords.longitude);
-    //FIX HARDCODED USER
-    updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
+    //FIX HARDCODED USER WITH SESSION VARIABLE OR SOME SHIT AND POSITION WITH REAL POS
+    //updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
+    updatePosition(59.347715, 18.075412, 3);
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
-/*newPos = function(){
-  console.log("new");
-  var position = {"lat: ", "59.332051", "lng: ", "18.098031"};
-  updatePosition("59.332051", "18.098031", 5);
-}*/
 
 $('.ui.sidebar').first()
   .sidebar('setting', 'transition', 'overlay')
