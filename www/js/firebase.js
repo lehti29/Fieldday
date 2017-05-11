@@ -23,7 +23,7 @@ usersRef.on("value", function(snapshot) {
   console.log("The read failed: " + errorObject.code);
 });
 // Get a reference to the database service
-var database = firebase.database();
+/*var database = firebase.database();
 var coordsRef = firebase.database().ref("coords");
 
 coordsRef.on("value", function(snapshot) {
@@ -37,8 +37,8 @@ coordsRef.on("value", function(snapshot) {
   }
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
-}); 
-
+}); */
+/*
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
@@ -68,4 +68,4 @@ function updatePosition(lat, lng, userid){
     lat: JSON.stringify(lat),
     lng: JSON.stringify(lng)
   });
-}
+}*/

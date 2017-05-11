@@ -36,18 +36,17 @@
             var parentElement = document.getElementById(id);
             var listeningElement = parentElement.querySelector('.listening');
             var receivedElement = parentElement.querySelector('.received');
-
             listeningElement.setAttribute('style', 'display:none;');
             receivedElement.setAttribute('style', 'display:block;');
         }*/
 
 
         if (id == 'deviceready'){
-            initMap();
+            //initMap();
         }
     }
 };
-
+/*
 var markers = [];
 initMap = function() {
     var uluru = {lat: -25.363, lng: 131.044};
@@ -92,7 +91,7 @@ sharePos = function(){
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
-
+*/
 $('.ui.sidebar').first()
   .sidebar('setting', 'transition', 'overlay')
   .sidebar('setting', 'mobileTransition', 'overlay')
