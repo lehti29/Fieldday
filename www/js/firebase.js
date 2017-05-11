@@ -28,17 +28,16 @@ var coordsRef = firebase.database().ref("coords");
 
 coordsRef.on("value", function(snapshot) {
   var users = snapshot.val();
-  for (var i = 1; i <= 1; i++) {
+  for (var i = 4; i <= 4; i++) {
     firebase.database().ref('coords/' + i).set({
       userid: i,
-      lat: "59.329323",
-      lng: "18.068581"
+      lat: "59.337479",
+      lng: "18.072797"
     });
   }
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
 }); 
-
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
@@ -51,14 +50,14 @@ coordsRef.on("child_changed", function(snapshot) {
   var lng = snapshot.val().lng;
   var userid = snapshot.val().userid
   console.log("changed ", snapshot.val());
-  deleteMarker(lat, lng, userid);
+  updateMarker(lat, lng, userid);
 });
 coordsRef.on("child_removed", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var userid = snapshot.val().userid
   console.log("removed ", snapshot.val());
-  updateMarker(lat, lng, userid);
+  deleteMarker(lat, lng, userid);
 });
 
 function updatePosition(lat, lng, userid){
