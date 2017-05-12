@@ -43,9 +43,90 @@
 
         if (id == 'deviceready'){
             initMap();
+
+            var updates = 0;
+            /*backgroundGeolocation.configure(callbackFn, failureFn, {
+            desiredAccuracy: 10,
+            stationaryRadius: 20,
+            distanceFilter: 30,
+            httpHeaders: { 'X-FOO': 'bar' },
+            maxLocations: 1000,
+            // Android only section 
+            locationProvider: backgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
+            interval: 5000,
+            fastestInterval: 5000,
+            activitiesInterval: 10000,
+            notificationTitle: 'Background tracking',
+            notificationText: 'enabled',
+            notificationIconColor: '#FEDD1E',
+            notificationIconLarge: 'mappointer_large',
+            notificationIconSmall: 'mappointer_small'
+        });
+        var callbackFn = function(location) {
+        console.log('[js] BackgroundGeolocation callback:  ' + 
+          location.latitude + ',' + location.longitude);
+        };
+        var failureFn = function(error) {
+        console.log('BackgroundGeolocation error');
+    };
+ 
+        backgroundGeolocation.watchLocationMode(
+          function (enabled) {
+            if (enabled) {
+              // location service are now enabled 
+              // call backgroundGeolocation.start 
+              backgroundGeolocation.start();
+              // only if user already has expressed intent to start service 
+            } else {
+              // location service are now disabled or we don't have permission 
+              // time to change UI to reflect that 
+              backgroundGeolocation.stop();
+            }
+          },
+          function (error) {
+            console.log('Error watching location mode. Error:' + error);
+          }
+        );
+         
+        backgroundGeolocation.isLocationEnabled(function (enabled) {
+          if (enabled) {
+            backgroundGeolocation.start(
+              function () {
+                console.log("started");
+                // service started successfully 
+                // you should adjust your app UI for example change switch element to indicate 
+                // that service is running 
+              },
+              function (error) {
+                // Tracking has not started because of error 
+                // you should adjust your app UI for example change switch element to indicate 
+                // that service is not running 
+                if (error.code === 2) {
+                  if (window.confirm('Not authorized for location updates. Would you like to open app settings?')) {
+                    backgroundGeolocation.showAppSettings();
+                  }
+                } else {
+                  window.alert('Start failed: ' + error.message);  
+                }
+              }
+            );
+          } else {
+            // Location services are disabled 
+            if (window.confirm('Location is disabled. Would you like to open location settings?')) {
+              backgroundGeolocation.showLocationSettings();
+            }
+          }
+        });*/
+
+            if(window.cordova){
+              console.log("cordova available");
+              //initGeoLocationBG();
+            }
         }
     }
 };
+//Shares your position every fifth second
+var myVar = setInterval(function(){ sharePos() }, 5*1000);
 
 var markers = [];
 initMap = function() {
@@ -60,6 +141,8 @@ initMap = function() {
       }
     });
 }
+
+
 newMarker = function(lat, lng, userid) {
   console.log("lat: " + lat + " lng: " + lng);
   var newMarker = new google.maps.Marker({
@@ -95,7 +178,7 @@ sharePos = function(){
     console.log("lat: ", startPos.coords.latitude, " lng: ", startPos.coords.longitude);
     //FIX HARDCODED USER WITH SESSION VARIABLE OR SOME SHIT AND POSITION WITH REAL POS
     //updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
-    updatePosition(59.347715, 18.075412, 3);
+    updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
