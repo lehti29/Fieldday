@@ -27,6 +27,7 @@ this.addUser = function(userId, username, password, groups, image) {
 this.checkUser = function(username, password) {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
+  console.log(username + " " + password)
 
   var promise = new Promise(function(resolve, reject) {
     usersRef.on("value", function(snapshot) {
@@ -55,6 +56,7 @@ this.checkUser = function(username, password) {
     if(result){
       console.log("Logged in");
       localStorage.loggedInUser = username;
+      document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
     }
     else
       console.log("Wrong username or password, try again");
