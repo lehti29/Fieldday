@@ -82,15 +82,12 @@ crossorigin="anonymous"></script>
     </div>
     <div class="pusher">
         <button class="circular ui violet icon button iconButtons largerButtons" id="sidebarToggle"><i class="content large icon"></i></button>
-
         <button id="sharePos" class="circular ui red icon button iconButtons largerButtons bottomLeft" onclick="sharePos()"><i class="marker large icon"></i> </button>
-        <button onclick="document.getElementById('id01').style.display='block'" class="circular ui violet icon button iconButtons largerButtons topRight">Login</button>
-        <div id="id01" class="modal">
-            <div class="modal-content animate">
-                <div class="imgcontainer">
-                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                </div>
 
+        <!-- Login Screen -->
+        <button onclick="document.getElementById('login').style.display='block'" class="circular ui violet icon button iconButtons largerButtons topRight">Login</button>
+        <div id="login" class="modal">
+            <div class="modal-content animate">
                 <div class="container">
                     <label><b>Username</b></label>
                     <input type="text" placeholder="Enter Username" id="username" required>
@@ -98,14 +95,16 @@ crossorigin="anonymous"></script>
                     <label><b>Password</b></label>
                     <input type="password" placeholder="Enter Password" id="password" required>
 
-                    <button type="submit" onclick="checkUser()">Login</button>
+                    <button type="submit" onclick="checkUser();">Login</button>
                 </div>
 
                 <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                    <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
                 </div>
             </div>
         </div>
+
+        <!-- Map -->
         <div id="map"></div>       
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

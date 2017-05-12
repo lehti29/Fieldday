@@ -27,8 +27,6 @@ this.addUser = function(userId, username, password, groups, image) {
 this.checkUser = function(username, password) {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
-  console.log(username);
-  console.log(password)
 
   var promise = new Promise(function(resolve, reject) {
     usersRef.on("value", function(snapshot) {
@@ -36,8 +34,10 @@ this.checkUser = function(username, password) {
       var users = snapshot.val();
 
       for (var i = 0; i < Object.keys(users).length; i++) {
-        if(Object.values(users)[i].username == username && Object.values(users)[i].password == password)
+        if(Object.values(users)[i].username == username && Object.values(users)[i].password == password){
           userExist = true;
+          document.getElementById('login').style.display='none'
+        }
       }
 
       if (userExist != null) {
@@ -52,8 +52,10 @@ this.checkUser = function(username, password) {
   });
 
   promise.then(function(result) {
-    if(result)
+    if(result){
       console.log("Logged in");
+      localStorage.loggedInUser = username;
+    }
     else
       console.log("Wrong username or password, try again");
   }, function(err) {
@@ -92,8 +94,8 @@ addUserToGroup = function(groupId, userId) {
   });
 };
 
-this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
-this.addUser(2, "Emil", "meh",{},"")
+// this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
+// this.addUser(2, "Emil", "meh",{},"")
 // checkUser("rasmuf","hej");
 // checkUser("Emil", "mh")
 
