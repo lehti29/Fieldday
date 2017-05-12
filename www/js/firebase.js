@@ -25,6 +25,11 @@ this.addUser = function(userId, username, password, groups, image) {
 
 //Checks whether or not the user is in the database and if the password is correct
 this.checkUser = function(username, password) {
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  console.log(username);
+  console.log(password)
+
   var promise = new Promise(function(resolve, reject) {
     usersRef.on("value", function(snapshot) {
       var userExist = false;
@@ -78,33 +83,35 @@ addUsersCoords = function(userId, lat, lng) {
 addUserToGroup = function(groupId, userId) {
   var groupRef = firebase.database().ref("groups/"+groupId+"/groupUsers");
   groupsRef.push({
-    userId: userId;
+    userId: userId
   });
 
   var userGroupRef = firebase.database().ref("users/"+userId+"/groups");
   groupsRef.push({
-    groupId: groupId;
+    groupId: groupId
   });
 };
 
-// this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
+this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
+this.addUser(2, "Emil", "meh",{},"")
 // checkUser("rasmuf","hej");
+// checkUser("Emil", "mh")
 
 
 
-coordsRef.on("value", function(snapshot) {
-  var users = snapshot.val();
-  console.log(users);
-  for (var i = 4; i <= 4; i++) {
-    firebase.database().ref('coords/' + i).set({
-      userid: i,
-      lat: "59.337479",
-      lng: "18.072797"
-    });
-  }
-}, function (errorObject) {
-  console.log("The read failed: " + errorObject.code);
-}); 
+// coordsRef.on("value", function(snapshot) {
+//   var users = snapshot.val();
+//   console.log(users);
+//   for (var i = 4; i <= 4; i++) {
+//     firebase.database().ref('coords/' + i).set({
+//       userid: i,
+//       lat: "59.337479",
+//       lng: "18.072797"
+//     });
+//   }
+// }, function (errorObject) {
+//   console.log("The read failed: " + errorObject.code);
+// }); 
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
