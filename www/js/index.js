@@ -146,16 +146,13 @@ initMap = function() {
 
 newMarker = function(lat, lng, userid) {
   console.log("lat: " + lat + " lng: " + lng);
-  var newMarker = new google.maps.Marker({
+  var markerNew = new google.maps.Marker({
       position: {lat: parseFloat(lat), lng: parseFloat(lng)},
       map: map,
       animation: google.maps.Animation.DROP,
       title: JSON.stringify(userid)
   });
-  markers.push({"userid" : userid, "marker" : newMarker});
-  newMarker.addListener('click', function() {
-    
-  });
+  markers.push({"userid" : userid, "marker" : markerNew});
 }
 deleteMarker = function(lat, lng, userid){
   //newMarker.setMap(null);
