@@ -55,11 +55,11 @@ crossorigin="anonymous"></script>
         <div class="item" id="userView">
             <div class="ui grid">
                 <div class="seven wide column">
-                    <img class="ui tiny circular image" id="displayImg" src="./img/avatar-default.jpg">
+                    <img class="ui tiny circular image" id="displayImg">
                 </div>
                 <div class="nine wide column">
-                    <h2 id="displayUsername">Angelina</h2>
-                    <h4 id="displayMail">Something</h4>
+                    <h2 id="displayUsername"></h2>
+                    <h4 id="displayMail"></h4>
                 </div>
             </div>
         </div>
@@ -80,6 +80,7 @@ crossorigin="anonymous"></script>
     </div>
     <div class="pusher">
         <button class="circular ui violet icon button iconButtons largerButtons" id="sidebarToggle"><i class="content large icon"></i></button>
+        
         <button id="sharePos" class="circular ui olive icon button iconButtons largerButtons bottomLeft" onclick="toggleInterval()">
             <i class="big icons">
                 <i class="marker icon"></i> 
@@ -87,10 +88,10 @@ crossorigin="anonymous"></script>
             </i>
         </button>
 
-        <a href="chat.html"><button class="circular ui violet icon button iconButtons largerButtons topThreeLeft"><i class="large talk outline icon"></i></button></a>
+        <a href="chat.html"><button class="circular ui violet icon button iconButtons largerButtons topRight"><i class="large talk outline icon"></i></button></a>
 
         <!-- Login Screen -->
-        <!--button class="circular ui violet icon button iconButtons largerButtons topRight" id="openLogin">
+        <!--button class="circular ui violet icon button iconButtons largerButtons topThreeLeft" id="openLogin">
             <i class="large sign in icon"></i>
         </button-->
         <div id="login" class="ui modal coupled">
@@ -127,8 +128,7 @@ crossorigin="anonymous"></script>
                     <label><b>Email</b></label>
                     <input type="text" placeholder="Enter Email" id="newemail" required>
 
-                    <label><b>Image</b></label>
-                    <input type="image" placeholder="Upload Image" id="newuserimage" required>
+                    <input type="file" placeholder="Upload Image" id="newuserimage" required>
 
                     <p id="createUserMessage" class="hide">That user already exists</p>
 

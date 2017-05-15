@@ -80,7 +80,7 @@ $('.modal.coupled').modal({
   })
 $('#login')
   //.modal('attach events', '#openLogin.button', 'show')
-  .modal('setting', 'closable', false)
+  //.modal('setting', 'closable', false)
   .modal('show');
 ;
 $('#createnewuser')
