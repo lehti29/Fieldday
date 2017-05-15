@@ -19,22 +19,58 @@ this.addUser = function() {
   var password = document.getElementById('newpassword').value;
   var email = document.getElementById('newemail').value;
   // var image = document.getElementById('newimage').value;
-  if(checkUser(username, password)) {
-    $('#createUserMessage').show();
-  } else { //if no user, we can create
-    usersRef.child(username).set({
-      userId: 1,
-      username: username,
-      password: password,
-      email: email,
-      groups: {group1: 1, group2: 2},
-      image: "placeholder"
-    });
-    addUsersCoords(username, 0, 0);
-    $('#createnewuser').hide();
-    $("#createusersuccess").show();
-  }
+  var promise = checkUser(username, password);
+  promise.then((result) => {
+    if(result) {
+      $('#createUserMessage').show();
+    } else { //if no user, we can create
+      usersRef.child(username).set({
+        userId: 1,
+        username: username,
+        password: password,
+        email: email,
+        groups: {group1: 1, group2: 2},
+        image: "placeholder"
+      });
+      finishLogin({
+        "username":username, 
+        "email": email,
+      })
+      addUsersCoords(username, 0, 0);
+      $('#createnewuser').hide();
+      $("#createusersuccess").show();
+    }
+  })
 };
+
+this.finishLogin = function(result) {
+  console.log("Logged in: ", result.username);
+  localStorage.loggedInUser = result.username;
+  if(result.image == null || result.image == "placeholder"){
+    localStorage.loggedInUserImg = "../img/avatar-default.jpg";
+  } else localStorage.loggedInUserImg = result.image;
+  localStorage.loggedInUserMail = result.email;
+  document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
+  document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
+  document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+  $('#login').modal('hide');
+  checkMarkers();
+}
+
+this.login = function(username, password) {
+  var promise = checkUser(username, password);
+  promise.then((result) => {
+    if(result) {
+      finishLogin(result);
+    } else{
+      $("#wrongpassword").show();
+    }
+  })
+  
+  //make a check user
+  //start tracking
+  //move camera focus
+}
 
 //Checks whether or not the user is in the database and if the password is correct
 this.checkUser = function(username, password) {
@@ -42,10 +78,8 @@ this.checkUser = function(username, password) {
     usersRef.child(username).on("value", function(snapshot) { //get only user if exist
       var users = snapshot.val();
       if(users && users.password == password) {
-        $('#login').modal('hide');
         resolve(users);
       } else {
-        console.log("no user with that username and password");
         resolve(0);
       }
     },
@@ -54,23 +88,10 @@ this.checkUser = function(username, password) {
     }); 
   });
 
-  promise.then(function(result) {
+  return promise.then(function(result) {
     if(result){
-      console.log("Logged in: ", result.username);
-      localStorage.loggedInUser = result.username;
-      if(result.image == null || result.image == "placeholder"){
-        localStorage.loggedInUserImg = "../img/avatar-default.jpg";
-      }
-      else localStorage.loggedInUserImg = result.image;
-      localStorage.loggedInUserMail = result.email;
-      document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
-      document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
-      document.getElementById("displayImg").src = localStorage.loggedInUserImg;
-      checkMarkers();
-      return 1;
-    }
-    else{
-      $("#wrongpassword").show();
+      return result;
+    } else{
       return 0;
     }
   }, function(err) {
@@ -174,7 +195,6 @@ function updatePosition(lat, lng, username){
 
 //Nytt
 function Chat() {
-  console.log("Yes");
   this.theMessages = document.getElementById('messages');
   this.messageForm = document.getElementById('message-form');
   this.messageInput = document.getElementById('message');
@@ -223,20 +243,20 @@ saveMessage = function() {
 
 //Message Template, user blue: #417cff max-width: 100%; style="color: white;""
 Chat.MESSAGE_TEMPLATE_USER =
-    '<div>'+
+'<div>'+
 
-      '<div class="message-container" id="message-container" style="background-color: #ee82ee; float: right; margin-top: 8px;">' +
-        '<div class="message"></div>' +
-      '</div>'+
-    '</div>';
+'<div class="message-container" id="message-container" style="background-color: #ee82ee; float: right; margin-top: 8px;">' +
+'<div class="message"></div>' +
+'</div>'+
+'</div>';
 
 Chat.MESSAGE_TEMPLATE_NOT_USER =
-      '<div>'+
-        '<div class="name"></div>' +
-        '<div class="message-container" id="message-container" style="background-color: #eaeaea">' +
-          '<div class="message"></div>' +
-      '</div>'+
-    '</div>';
+'<div>'+
+'<div class="name"></div>' +
+'<div class="message-container" id="message-container" style="background-color: #eaeaea">' +
+'<div class="message"></div>' +
+'</div>'+
+'</div>';
 
 displayMessage = function(key, name, text) {
   var div = document.getElementById(key);
@@ -285,8 +305,8 @@ var anvandaren = localStorage.loggedInUser;
 
 //Test för 1:a meddelandet...
 function sendTestMess() {
-    this.messagesRef.push({
+  this.messagesRef.push({
     name: "Test user",
     text: "Japp, det funkar"
-    });
+  });
 }
