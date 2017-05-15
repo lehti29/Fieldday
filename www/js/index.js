@@ -46,10 +46,10 @@
 };
 //Shares your position every fifth second
 var myVar = setInterval(function(){ sharePos() }, 5*1000);
-
+var infowindow;
 var markers = [];
 initMap = function() {
-    var infowindow = new google.maps.InfoWindow();
+    infowindow = new google.maps.InfoWindow();
     var sthlm = {lat: 59.337479, lng: 18.072797};
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: 14,
@@ -62,16 +62,20 @@ initMap = function() {
     });
 }
 
-
 newMarker = function(lat, lng, userid) {
   console.log("lat: " + lat + " lng: " + lng);
-  var markerNew = new google.maps.Marker({
+  var newMarker = new google.maps.Marker({
       position: {lat: parseFloat(lat), lng: parseFloat(lng)},
       map: map,
       animation: google.maps.Animation.DROP,
       title: JSON.stringify(userid)
   });
-  markers.push({"userid" : userid, "marker" : markerNew});
+  console.log("userid: ", userid);
+  google.maps.event.addListener(newMarker, 'click', function() {
+    infowindow.setContent("User: ", userid);
+    infowindow.open(map, newMarker);
+  });
+  markers.push({"userid" : userid, "marker" : newMarker});
 }
 deleteMarker = function(lat, lng, userid){
   //newMarker.setMap(null);
