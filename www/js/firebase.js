@@ -13,18 +13,26 @@ var groupsRef = firebase.database().ref("groups");
 var coordsRef = firebase.database().ref("coords");
 
 //Add a user to the database
-this.addUser = function(userId, username, password, groups, image) {
+this.addUser = function() {
+  var username = document.getElementById('newusername').value;
+  var password = document.getElementById('newpassword').value;
+  var email = document.getElementById('newemail').value;
+  // var image = document.getElementById('newimage').value;
   usersRef.push({
-    userId: userId,
+    userId: 1,
     username: username,
     password: password,
-    groups: groups,
-    image: image
+    email: email,
+    groups: {},
+    image: null
   });
+  $('#createnewuser').hide();
+  $('#login').show();
+  $("#createusersuccess").show();
 };
 
 //Checks whether or not the user is in the database and if the password is correct
-this.checkUser = function(username, password) {
+this.checkUser = function() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   var uid;
@@ -41,7 +49,7 @@ this.checkUser = function(username, password) {
           userExist = true;
           uid = Object.values(users)[i].userId;
           imgPath = Object.values(users)[i].image;
-          document.getElementById('login').style.display='none'
+          $('#login').hide();
         }
       }
 
@@ -65,8 +73,10 @@ this.checkUser = function(username, password) {
       document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
       checkMarkers();
     }
-    else
-      console.log("Wrong username or password, try again");
+    else{
+      console.log("Fel lösenord")
+      $("#wrongpassword").show();
+    }
   }, function(err) {
     console.log(err);
   });
@@ -102,27 +112,6 @@ addUserToGroup = function(groupId, userId) {
     groupId: groupId
   });
 };
-
-// this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
-// this.addUser(2, "Emil", "meh",{},"")
-// checkUser("rasmuf","hej");
-// checkUser("Emil", "mh")
-
-
-
-// coordsRef.on("value", function(snapshot) {
-//   var users = snapshot.val();
-//   console.log(users);
-//   for (var i = 4; i <= 4; i++) {
-//     firebase.database().ref('coords/' + i).set({
-//       userid: i,
-//       lat: "59.337479",
-//       lng: "18.072797"
-//     });
-//   }
-// }, function (errorObject) {
-//   console.log("The read failed: " + errorObject.code);
-// }); 
 
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
