@@ -18,28 +18,29 @@ this.addUser = function() {
   var password = document.getElementById('newpassword').value;
   var email = document.getElementById('newemail').value;
   // var image = document.getElementById('newimage').value;
-  usersRef.child(username).set({
-    userId: 1,
-    username: username,
-    password: password,
-    email: email,
-    groups: {},
-    image: null
-  });
-  $('#createnewuser').hide();
-  $('#login').show();
-  $("#createusersuccess").show();
+  if(checkUser(username, password)) {
+    $('#createUserMessage').show();
+  } else { //if no user, we can create
+    usersRef.child(username).set({
+      userId: 1,
+      username: username,
+      password: password,
+      email: email,
+      groups: {},
+      image: null
+    });
+    $('#createnewuser').hide();
+    $('#login').show();
+    $("#createusersuccess").show();
+  }
 };
 
 //Checks whether or not the user is in the database and if the password is correct
-this.checkUser = function() {
-  var username = document.getElementById('username').value;
-  var password = document.getElementById('password').value;
-
+this.checkUser = function(username, password) {
   var promise = new Promise(function(resolve, reject) {
     usersRef.child(username).on("value", function(snapshot) { //get only user if exist
       var users = snapshot.val();
-      if(users.password == password) {
+      if(users && users.password == password) {
         $('#login').hide();
         resolve(users);
       } else {
@@ -59,13 +60,16 @@ this.checkUser = function() {
       //localStorage.loggedInUserImg = result.imgPath;
       document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
       checkMarkers();
+      return 1;
     }
     else{
       console.log("Fel losenord")
       $("#wrongpassword").show();
+      return 0;
     }
   }, function(err) {
     console.log(err);
+    return 0;
   });
 }
 
