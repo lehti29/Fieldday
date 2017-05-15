@@ -82,21 +82,50 @@ crossorigin="anonymous"></script>
         <button id="sharePos" class="circular ui red icon button iconButtons largerButtons bottomLeft" onclick="sharePos()"><i class="marker large icon"></i> </button>
 
         <!-- Login Screen -->
-        <button onclick="document.getElementById('login').style.display='block'" class="circular ui violet icon button iconButtons largerButtons topRight">Login</button>
-        <div id="login" class="modal">
+        <button onclick="$('#login').show()" class="circular ui violet icon button iconButtons largerButtons topRight">Login</button>
+        <div id="login" class="modal hide">
             <div class="modal-content animate">
                 <div class="container">
+                    <h3>Login</h3>
+                    <p id="createusersuccess" class="hide">Your account has been created! Please enter your credentials to login</p>
                     <label><b>Username</b></label>
                     <input type="text" placeholder="Enter Username" id="username" required>
 
                     <label><b>Password</b></label>
                     <input type="password" placeholder="Enter Password" id="password" required>
 
+                    <p id="wrongpassword" class="hide">Wrong password or username, make sure you've created an account!</p>
                     <button type="submit" onclick="checkUser();">Login</button>
                 </div>
 
-                <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
+                <div class="container">
+                    <button type="button" onclick="$('#login').hide()" class="loginbtn">Cancel</button>
+                    <button class="loginbtn" onclick="$('#createnewuser').show(); $('#login').hide();" id="createnewuserbutton">Create new user</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="createnewuser" class="modal hide">
+            <div class="modal-content animate">
+                <div class="container">
+                    <h3>Enter credentials to create user</h3>
+                    <label><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" id="newusername" required>
+
+                    <label><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" id="newpassword" required>
+
+                    <label><b>Email</b></label>
+                    <input type="text" placeholder="Enter Email" id="newemail" required>
+
+                    <label><b>Image</b></label>
+                    <input type="image" placeholder="Upload Image" id="newuserimage" required>
+
+                    <button type="submit" onclick="addUser();">Create User</button>
+                </div>
+
+                <div class="container">
+                    <button type="button" onclick="$('#createnewuser').hide(); $('#login').show();" class="loginbtn">Cancel</button>
                 </div>
             </div>
         </div>
