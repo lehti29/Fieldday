@@ -130,6 +130,7 @@ var myVar = setInterval(function(){ sharePos() }, 5*1000);
 
 var markers = [];
 initMap = function() {
+    var infowindow = new google.maps.InfoWindow();
     var sthlm = {lat: 59.337479, lng: 18.072797};
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: 14,
@@ -152,6 +153,9 @@ newMarker = function(lat, lng, userid) {
       title: JSON.stringify(userid)
   });
   markers.push({"userid" : userid, "marker" : newMarker});
+  newMarker.addListener('click', function() {
+    
+  });
 }
 deleteMarker = function(lat, lng, userid){
   //newMarker.setMap(null);
