@@ -60,7 +60,7 @@ this.checkUser = function(username, password) {
       console.log("Logged in: ", result.username);
       localStorage.loggedInUser = result.username;
       if(result.image == null || result.image == "placeholder"){
-        localStorage.loggedInUserImg = "./../img/avatar-default.jpg";
+        localStorage.loggedInUserImg = "../img/avatar-default.jpg";
       }
       else localStorage.loggedInUserImg = result.image;
       localStorage.loggedInUserMail = result.email;
@@ -274,7 +274,7 @@ displayMessage = function(key, name, text) {
 
 //Set user for now....
 var anvandaren;
-function popup() {
+/*function popup() {
   var person = prompt("Username:", "Write here");
   if(person == null || person == "") {
     console.log("User cancelled the prompt"); //Nåt slags felmeddelande....behövs nog inte skrivas ut....
@@ -282,7 +282,8 @@ function popup() {
     anvandaren = person; //Användaren sparas här (namnet)
   }
   console.log(anvandaren);
-}
+}*/
+var anvandaren = localStorage.loggedInUser;
 
 //Test för 1:a meddelandet...
 function sendTestMess() {

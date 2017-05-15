@@ -33,7 +33,7 @@ newMarker = function(lat, lng, usrname) {
   else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
   google.maps.event.addListener(newMarker, 'click', function() {
     var infoString = "<b>User: </b>" + JSON.stringify(usrname) + 
-    "<br><img src='http://people.kth.se/~lehti/img/" + usrname + ".jpg' height='100' width='100'>";
+    "<br><img src='http://people.kth.se/~lehti/img/" + usrname + ".jpg' height='100' width='100' alt='Image'>";
     infowindow.setContent(infoString);
     infowindow.open(map, newMarker);
   });
