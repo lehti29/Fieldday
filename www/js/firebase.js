@@ -18,7 +18,7 @@ this.addUser = function() {
   var password = document.getElementById('newpassword').value;
   var email = document.getElementById('newemail').value;
   // var image = document.getElementById('newimage').value;
-  usersRef.push({
+  usersRef.child(username).set({
     userId: 1,
     username: username,
     password: password,
@@ -35,46 +35,33 @@ this.addUser = function() {
 this.checkUser = function() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
-  var uid;
-  var imgPath;
-  console.log(username + " " + password)
 
   var promise = new Promise(function(resolve, reject) {
-    usersRef.on("value", function(snapshot) {
-      var userExist = false;
+    usersRef.child(username).on("value", function(snapshot) { //get only user if exist
       var users = snapshot.val();
-
-      for (var i = 0; i < Object.keys(users).length; i++) {
-        if(Object.values(users)[i].username == username && Object.values(users)[i].password == password){
-          userExist = true;
-          uid = Object.values(users)[i].userId;
-          imgPath = Object.values(users)[i].image;
-          $('#login').hide();
-        }
+      if(users.password == password) {
+        $('#login').hide();
+        resolve(users);
+      } else {
+        console.log("no user with that username and password");
+        resolve(0);
       }
-
-      if (userExist != null) {
-        resolve(userExist);
-      }
-      else {
-        reject(Error("It broke"));
-      }
-    }, function (errorObject) {
+    },
+    function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     }); 
   });
 
   promise.then(function(result) {
     if(result){
-      console.log("Logged in");
-      localStorage.loggedInUser = username;
-      localStorage.loggedInUserId = uid;
-      localStorage.loggedInUserImg = imgPath;
+      console.log("Logged in: ", result.username);
+      localStorage.loggedInUser = result.username;
+      //localStorage.loggedInUserImg = result.imgPath;
       document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
       checkMarkers();
     }
     else{
-      console.log("Fel lösenord")
+      console.log("Fel losenord")
       $("#wrongpassword").show();
     }
   }, function(err) {

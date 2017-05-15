@@ -83,13 +83,16 @@ toggleInterval = function() {
     isInterval = 0;
     clearInterval(shareInterval);
     $("#sharePosIcon").show();
-  } else {
-    console.log("start sharing");
+  } else if (localStorage.loggedInUser) {
+    console.log("start sharing ", localStorage);
     isInterval = 1;
     $("#sharePosIcon").hide();
     shareInterval = setInterval(sharePos, 5*1000);
+  } else {
+    console.log("please log in");
   }
 }
+
 
 function sharePos(){
     var geoSuccess = function(position) {
@@ -99,5 +102,3 @@ function sharePos(){
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
-
-toggleInterval();
