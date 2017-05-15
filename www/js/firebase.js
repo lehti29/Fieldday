@@ -93,8 +93,8 @@ addUserToGroup = function(groupId, userId) {
   });
 };
 
-this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
-this.addUser(2, "Emil", "meh",{},"")
+//this.addUser(1, "rasmuf", "hej", {group1: 1, group2: 2}, ".png");
+//this.addUser(2, "Emil", "meh",{},"")
 // checkUser("rasmuf","hej");
 // checkUser("Emil", "mh")
 

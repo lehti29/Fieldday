@@ -87,7 +87,7 @@ crossorigin="anonymous"></script>
 
         <button onclick="document.getElementById('id01').style.display='block'" class="circular ui violet icon button iconButtons largerButtons topRight">Login</button>
 
-        <button onclick="document.getElementById('id02').style.display='block'; Chat(); popup();" class="circular ui violet icon button iconButtons largerButtons topThreeLeft"><i class="large talk outline icon"></i></button>
+        <a href="chat.html"><button class="circular ui violet icon button iconButtons largerButtons topThreeLeft"><i class="large talk outline icon"></i></button></a>
 
         <div id="id01" class="modal">
             <div class="modal-content animate">
@@ -110,41 +110,6 @@ crossorigin="anonymous"></script>
                 </div>
             </div>
         </div>
-
-        <div id="id02" class="modalChat">
-            <div class="modal-contentChat">
-                <div class="imgcontainerChat">
-                    <span onclick="document.getElementById('id02').style.display='none'" class="closeChat" title="Close Modal"><i class="chevron left small icon"></i></span>
-                    <span id="groupName"></span>
-                </div>
-
-                <div class="container">
-                  
-                    <div id="messages-card">
-                        <div >          
-                          <div id="messages">
-                            <!--<span id="message-filler"></span>-->
-                          </div>          
-                          <div id="message-form">
-                            <div id="textAndButton">
-                            <div id="textArea">
-                              <input class="text-input" type="text" id="message" placeholder="Message...">
-                            </div>
-                            <div id="buttonArea">
-                            <button id="submitChat" type="submit" onclick="saveMessage()">
-                              <i class="big send icon"></i>
-                            </button>
-                        </div>
-                          </div>  
-                          </div>       
-                        </div>
-                    </div>    
-
-
-                </div>
-            </div>
-        </div>
-
 
         <div id="map"></div>       
         <!--<script type="text/javascript" src="cordova.js"></script>-->

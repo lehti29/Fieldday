@@ -52,50 +52,33 @@ crossorigin="anonymous"></script>
 
 <title>FieldDay!</title>
 </head>
+
 <body onload="Chat(); popup();"> <!--Ta bort popupen sedan...-->
-    
-
-            <div class="contentChat">
-                <div class="imgcontainerChat">
-                    <span onclick="/index.html" class="closeChat" title="Close Chat"><i class="chevron left small icon"></i></span>
-                    <span id="groupName"></span>
-                </div>
-
-                <div class="container">                  
-
-
-     
-
-                          <div id="messages">
-                          </div>          
-                          
-
-
-
-
-                </div>
-                          <div id="message-form"><!--class="ui padded grid"-->
-                           <!-- <div id="textAndButton" class="ui padded grid">-->
-                                <div id="textArea"><!--class="twelve wide column"-->
-                                  <input class="text-input" type="text" id="message" placeholder="Message...">
-                                </div>
-
-                               <div id="buttonArea"> <!--class="one wide column"-->
-                                <button id="submitChat"  type="submit"  onclick="saveMessage()"><!--class="two wide column"-->
-                                  <i class="big send icon"></i>
-                                </button>
-                               </div>
-
-                            </div>  
-                          </div>  
-
-            </div>
-
-
-        <!--<script type="text/javascript" src="cordova.js"></script>-->
-       <!-- <script type="text/javascript" src="js/index.js"></script>-->
-        <script type="text/javascript" src="js/firebase.js"></script>
-        <script src="https://code.jquery.com/jquery.js"></script> 
+  <div class="contentChat">
+    <div class="chatTopbar">
+      <a href="index.html"><span class="closeChat" title="Close Chat"><i class="chevron left small icon"></i></span></a>
+      <span id="groupName"></span>
     </div>
+    <div id="messages"></div>    
+    <div id="message-form">
+      <div id="textAndButton">
+        <div id="textArea">
+          <input class="text-input" type="text" id="message" placeholder="Message...">
+        </div>
+        <div id="buttonArea"> 
+          <button id="submitChat"  type="submit"  onclick="saveMessage()">
+            <i class="big send icon"></i>
+          </button>
+        </div>
+      </div>
+    </div>  
+  </div>
+
+
+<!--<script type="text/javascript" src="cordova.js"></script>-->
+<!-- <script type="text/javascript" src="js/index.js"></script>-->
+<script type="text/javascript" src="js/firebase.js"></script>
+<script src="https://code.jquery.com/jquery.js"></script> 
+
 </body>
 </html>

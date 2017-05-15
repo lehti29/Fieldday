@@ -4,8 +4,7 @@ input[type=text] {
 	padding: 12px 20px;
 	margin: 8px 0;
 	display: inline-block;
-	border: 1px solid #ccc;
-	
+	border: 1px solid #ccc;	
 }
 
 /* Center the image and position the close button */
@@ -14,14 +13,14 @@ input[type=text] {
 	margin: 24px 0 12px 0;
 	position: relative;
 }
-.imgcontainerChat {
+.chatTopbar {
 	text-align: center;
 	margin: 0 0 -10px 0;
 	position: fixed;
 	font-weight: bold;
 	font-size: 22px;
 	width: 100%;
-    background-color: red; //white
+    background-color: white; 
     top: 0;
     height: 2em;
     padding-top: 10px;
@@ -34,7 +33,6 @@ img.avatar {
 
 .container {
 	padding: 16px;
-	//height: 91%;
 }
 
 /* Change styles for span and cancel button on extra small screens */
@@ -52,6 +50,8 @@ img.avatar {
 	height: 100%;
 	overflow-y: scroll;
 	display: grid;
+	margin: 0 1em 5em 1em;
+
 
 }
 
@@ -98,8 +98,7 @@ img.avatar {
 	color: #000;
 	font-size: 25px;
 	font-weight: bold;
-	padding-top: 10px; //Kanske kan bytas till nåt bättre...
-}
+	margin-top: 10px;}
 
 .closeChat:hover,
 .closeChat:focus {
@@ -113,7 +112,6 @@ img.avatar {
     height: 4em;
     position: absolute;
     background-color: #ee82ee;
-    //right: 0;
     margin: auto;
 }
 
@@ -139,22 +137,16 @@ button:hover {
 }
 
 #textArea {
-	//width: 80%;
-	//margin-right: 2em;
-	//margin-left: 1em;
-	flex: 1;
-	padding: .5em 1em;
-	box-sizing: border-box;
+	flex-grow: 7;
+	margin-left: 1em;
 }
 
 #message-form {
-	//display: block;
-	display: flex;
     position: fixed;
     width: 100%;
-    background-color: red;
+    background-color: white;
     bottom: 0;
-    //height: 6em;
+    height: 5em;
 }
 
 .send {
@@ -167,16 +159,11 @@ button:hover {
 
 #textAndButton {
 	display: flex;
-	position: relative;
+    width: 100%;
+    margin-top: 6px;
 }
-#buttonarea {
-	flex: 0;
-	padding: .5em 1em; 
-	white-space: nowrap;
+#buttonArea {
+	flex-grow: 1;
+	margin-left: 2em;
+    margin-right: 4em;
 }
-
-//.flexbox { display: flex; }
-//.flexbox .stretch { flex: 1; }
-//.flexbox .normal { flex: 0; margin: 0 0 0 1rem; }
-//.flexbox div input { padding: .5em 1em; width: 100%; }
-//.flexbox div button { padding: .5em 1em; white-space: nowrap; }
