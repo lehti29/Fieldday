@@ -90,9 +90,9 @@ crossorigin="anonymous"></script>
         <a href="chat.html"><button class="circular ui violet icon button iconButtons largerButtons topThreeLeft"><i class="large talk outline icon"></i></button></a>
 
         <!-- Login Screen -->
-        <button class="circular ui violet icon button iconButtons largerButtons topRight" id="openLogin">
+        <!--button class="circular ui violet icon button iconButtons largerButtons topRight" id="openLogin">
             <i class="large sign in icon"></i>
-        </button>
+        </button-->
         <div id="login" class="ui modal coupled">
             <div class="modal-content">
                 <div class="container">
@@ -105,10 +105,10 @@ crossorigin="anonymous"></script>
                     <input type="password" placeholder="Enter Password" id="password" required>
 
                     <p id="wrongpassword" class="hide">Wrong password or username, make sure you've created an account!</p>
-                    <button type="submit" class="ui olive big button" id="loginButton" onclick="login(document.getElementById('username').value, document.getElementById('password').value);">Login</button>
+                    <button type="submit" class="ui olive big fullwidth button" onclick="login(document.getElementById('username').value, document.getElementById('password').value);">Login</button>
                     <div class="actions">
-                        <button class="ui cancel button left floated loginCancelButton">Cancel</button>
-                        <button class="ui button blue right floated loginbtn" id="createnewuserbutton">Create new user</button>
+                        <!--button class="ui cancel button left floated loginCancelButton">Cancel</button-->
+                        <button class="ui button blue fullwidth leftmargin loginbtn" id="createnewuserbutton">Create new user</button>
                     </div>
                 </div>
             </div>
@@ -134,7 +134,7 @@ crossorigin="anonymous"></script>
 
                     <div class="actions">
                         <button type="submit" class="ui approve olive right floated button" type="button" onclick="addUser();">Create User</button>
-                        <button type="button" class="ui cancel button left floated loginCancelButton">Cancel</button>
+                        <button type="button" class="ui cancel button leftmargin loginCancelButton">Cancel</button>
                     </div>
                 </div>
             </div>

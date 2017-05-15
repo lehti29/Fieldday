@@ -149,16 +149,16 @@ coordsRef.on("child_added", function(snapshot) {
 coordsRef.on("child_changed", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
-  var username = snapshot.val().username
+  var username = snapshot.val().username;
   console.log("changed ", snapshot.val());
   updateMarker(lat, lng, username);
 });
 coordsRef.on("child_removed", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
-  var userid = snapshot.val().userid
+  var userid = snapshot.val().username;
   console.log("removed ", snapshot.val());
-  deleteMarker(lat, lng, userid);
+  deleteMarker(lat, lng, username);
 });
 
 function updatePosition(lat, lng, username){

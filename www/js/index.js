@@ -79,7 +79,9 @@ $('.modal.coupled').modal({
     allowMultiple: true
   })
 $('#login')
-  .modal('attach events', '#openLogin.button', 'show')
+  //.modal('attach events', '#openLogin.button', 'show')
+  .modal('setting', 'closable', false)
+  .modal('show');
 ;
 $('#createnewuser')
   .modal('attach events', '#createnewuserbutton');

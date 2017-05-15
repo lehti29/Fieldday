@@ -39,9 +39,12 @@ newMarker = function(lat, lng, usrname) {
   });
   markers.push({"marker" : newMarker, "username" : usrname});
 }
-deleteMarker = function(lat, lng, userid){
-  var result = $.grep(markers, function(e){ return e.userid === userid; });
+
+//DOESN'T WOOOORK. IT CAN'T FIND THE MARKER IN MARKERS
+deleteMarker = function(lat, lng, username){
+  var result = $.grep(markers, function(e){ return e.username === username; });
   if(result.length == 1){
+    console.log("delete")
     var toBeDeleted = result[0].marker;
     toBeDeleted.setMap(null);
     markers.delete(result[0]);

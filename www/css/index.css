@@ -83,7 +83,7 @@ button.ui.icon.largerButtons {
 	margin: auto;
 } 
 
-#loginButton {
+.fullwidth {
 	width: 100%;
 }
 
@@ -119,6 +119,6 @@ input[type=text], input[type=password] {
 	margin-top:10px;
 }
 
-.ui.cancel.button.left.floated.loginCancelButton {
+.actions button.leftmargin.ui.button {
 	margin-left:0;
 }
