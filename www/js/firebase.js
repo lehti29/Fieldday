@@ -35,6 +35,8 @@ this.addUser = function() {
 this.checkUser = function() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
+  var uid;
+  var imgPath;
   console.log(username + " " + password)
 
   var promise = new Promise(function(resolve, reject) {
@@ -45,6 +47,8 @@ this.checkUser = function() {
       for (var i = 0; i < Object.keys(users).length; i++) {
         if(Object.values(users)[i].username == username && Object.values(users)[i].password == password){
           userExist = true;
+          uid = Object.values(users)[i].userId;
+          imgPath = Object.values(users)[i].image;
           $('#login').hide();
         }
       }
@@ -64,7 +68,10 @@ this.checkUser = function() {
     if(result){
       console.log("Logged in");
       localStorage.loggedInUser = username;
+      localStorage.loggedInUserId = uid;
+      localStorage.loggedInUserImg = imgPath;
       document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
+      checkMarkers();
     }
     else{
       console.log("Fel lösenord")
@@ -109,9 +116,37 @@ addUserToGroup = function(groupId, userId) {
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
-  var userid = snapshot.val().userid
+  var userid = snapshot.val().userid;
   console.log("added ", snapshot.val());
-  newMarker(lat, lng, userid);
+
+  var prom = new Promise(function(resolve, reject) {
+    usersRef.on("value", function(snapshot) {
+      var user = snapshot.val();
+      for (var i = 0; i < Object.keys(user).length; i++) {
+        if(Object.values(user)[i].userId == userid){
+          var usr = Object.values(user)[i].username;
+          console.log("user: ", usr);
+        }
+      }
+      if (usr != null) {
+        resolve(usr);
+      }
+      else {
+        reject(Error("It broke"));
+      }
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }); 
+  });
+  prom.then(function(result) {
+    console.log("after");
+    if(result){
+      console.log("result", result);
+      newMarker(lat, lng, userid, result);
+    }
+    else
+      console.log("Wrong");
+  });
 });
 coordsRef.on("child_changed", function(snapshot) {
   var lat = snapshot.val().lat;

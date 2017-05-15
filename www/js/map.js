@@ -17,24 +17,37 @@ initMap = function() {
     });
 }
 
-newMarker = function(lat, lng, userid) {
+newMarker = function(lat, lng, userid, usrname) {
   console.log("lat: " + lat + " lng: " + lng);
+  var firstLetter = usrname.charAt(0).toUpperCase();
+
   var newMarker = new google.maps.Marker({
       position: {lat: parseFloat(lat), lng: parseFloat(lng)},
       map: map,
       animation: google.maps.Animation.DROP,
       title: JSON.stringify(userid)
   });
-  console.log("userid: ", userid);
+  if(usrname == localStorage.loggedInUser){
+    newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
+  }
+  else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
+
+  var imgSrc = "http://barnmissionen.se/shop/wp-content/uploads/2012/10/B_Webshop_Footbol.jpg";
   google.maps.event.addListener(newMarker, 'click', function() {
-    infowindow.setContent("User: ", userid);
+    var infoString = "Username:" + JSON.stringify(usrname) + "<br> + <img src='" + localStorage.loggedInUserImg +"' height='42' width='42'>";
+    infowindow.setContent(infoString);
     infowindow.open(map, newMarker);
+
   });
-  markers.push({"userid" : userid, "marker" : newMarker});
+  markers.push({"userid" : userid, "marker" : newMarker, "username" : usrname});
 }
 deleteMarker = function(lat, lng, userid){
-  //newMarker.setMap(null);
-  //markers.delete(newMarker);
+  var result = $.grep(markers, function(e){ return e.userid === userid; });
+  if(result.length == 1){
+    var toBeDeleted = result[0].marker;
+    toBeDeleted.setMap(null);
+    markers.delete(result[0]);
+  }
 }
 updateMarker = function(lat, lng, userid){
   //console.log("inside updateMarker");
@@ -50,6 +63,18 @@ updateMarker = function(lat, lng, userid){
     console.log("No Marker from that user was found");
   }
   else console.log("More than one marker from that user was found");
+}
+checkMarkers = function(){
+  for(var i = 0; i < markers.length; i++){
+    if(markers[i].userid == localStorage.loggedInUserId){
+      console.log("this is me");
+      markers[i].marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
+    }
+    else {
+      var letter = markers[i].username.charAt(0).toUpperCase();
+      markers[i].marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + letter + '.png');
+    }
+  }
 }
 
 toggleInterval = function() {
@@ -69,9 +94,8 @@ toggleInterval = function() {
 function sharePos(){
     var geoSuccess = function(position) {
     startPos = position;
-    //FIX HARDCODED USER WITH SESSION VARIABLE OR SOME SHIT AND POSITION WITH REAL POS
-    //updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
-    updatePosition(startPos.coords.latitude, startPos.coords.longitude, 1);
+    updatePosition(startPos.coords.latitude, startPos.coords.longitude, localStorage.loggedInUserId);
+
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
