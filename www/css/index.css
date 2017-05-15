@@ -29,6 +29,9 @@ button.ui.icon.largerButtons {
 .topRight {
 	top: 60px;
 }
+.topThreeLeft{
+	top: 110px;
+}
 
 #sidebarToggle {
 	top: 10px;
@@ -104,6 +107,13 @@ button:hover {
 	text-align: center;
 	margin: 24px 0 12px 0;
 	position: relative;
+}
+.imgcontainerChat {
+	text-align: center;
+	margin: 24px 0 -10px 0;
+	position: relative;
+	font-weight: bold;
+	font-size: 22px;
 }
 
 img.avatar {
@@ -184,4 +194,111 @@ span.psw {
 	.cancelbtn {
 		width: 100%;
 	}
+}
+
+#messages {
+	height: 39em;
+	overflow-y: scroll;
+	display: grid;
+
+}
+
+#messages::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+.message-container {
+	margin: 2px;
+    margin-bottom: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    -moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px black;
+	box-shadow: 0 0 5px black;
+	border-radius: 25px; //Rundade hörn
+	max-width: 100%;
+    display: inline-block;
+}
+
+.message {
+	font-weight: bold;
+	padding: 6px;
+}
+.name {
+	font-style: italic;
+	padding-left: 10px;
+}
+
+/* The Modal (background) */
+.modalChat {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 4; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-contentChat {
+	background-color: #fefefe;
+	border: 1px solid #888;
+	height: 100%;
+}
+
+
+/* The Close Button (x) */
+.closeChat {
+	position: absolute;
+	left: 10px;
+	top: 0;
+	color: #000;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.closeChat:hover,
+.closeChat:focus {
+	color: red;
+	cursor: pointer;
+}
+
+#submitChat {
+	border-radius: 50px;
+    width: 4em;
+    height: 4em;
+    position: absolute;
+    background-color: #ee82ee;
+    right: 0;
+}
+
+.text-input {
+    border-radius: 25px;
+}
+
+#textArea {
+	width: 80%;
+	margin-right: 2em;
+}
+
+#message-form {
+	display: block;
+	width: 100%
+}
+
+.send {
+	text-align: center;
+	color: white;
+    position: absolute;
+    top: 25%;
+    right: 20%;
+}
+
+#textAndButton {
+	display: flex;
+	position: relative;
 }

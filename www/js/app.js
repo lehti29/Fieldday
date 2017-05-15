@@ -19,6 +19,17 @@ window.onclick = function(event) {
     }
 }
 
+// Get the logIn-Modal
+var modalChat = document.getElementById('id02');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modalChat) {
+        console.log("Japp här");
+        new Chat();
+    }
+}
+
 // Get current UUID
 var myUuid = localStorage.getItem('myUuid');
 if (!myUuid) {
