@@ -118,21 +118,21 @@ coordsRef.on("child_added", function(snapshot) {
   var lng = snapshot.val().lng;
   var userid = snapshot.val().userid
   console.log("added ", snapshot.val());
-  newMarker(lat, lng, userid);
+  //newMarker(lat, lng, userid);
 });
 coordsRef.on("child_changed", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var userid = snapshot.val().userid
   console.log("changed ", snapshot.val());
-  updateMarker(lat, lng, userid);
+ // updateMarker(lat, lng, userid);
 });
 coordsRef.on("child_removed", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var userid = snapshot.val().userid
   console.log("removed ", snapshot.val());
-  deleteMarker(lat, lng, userid);
+  //deleteMarker(lat, lng, userid);
 });
 
 function updatePosition(lat, lng, userid){
@@ -170,8 +170,8 @@ loadMessages = function() {
     var val = data.val();
     this.displayMessage(data.key, val.name, val.text); 
   }.bind(this);
-  this.messagesRef.limitToLast(15).on('child_added', setMessage);
-  this.messagesRef.limitToLast(15).on('child_changed', setMessage);
+  this.messagesRef.limitToLast(20).on('child_added', setMessage);
+  this.messagesRef.limitToLast(20).on('child_changed', setMessage);
   console.log("loadMessages");
 };
 
