@@ -62,11 +62,18 @@ this.finishLogin = function(result) {
     localStorage.loggedInUserImg = "../img/avatar-default.jpg";
   } else localStorage.loggedInUserImg = result.image;
   localStorage.loggedInUserMail = result.email;
+  if(result.groups) {
+    console.log("there are groups! ", result.groups)
+    localStorage.loggedInUserGroups = JSON.stringify(result.groups);
+  } else if (localStorage.loggedInUserGroups) {
+    localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
+  }
   document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
   document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
   document.getElementById("displayImg").src = localStorage.loggedInUserImg;
   $('#login').modal('hide');
   checkMarkers();
+  initCheckboxes();
 }
 
 this.login = function(username, password) {
