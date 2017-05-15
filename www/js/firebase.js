@@ -13,30 +13,42 @@ var groupsRef = firebase.database().ref("groups");
 var coordsRef = firebase.database().ref("coords");
 var messagesRef = firebase.database().ref('messages');
 
+var storage = firebase.storage().ref(); //the image storage
+var imageStorageRef = storage.child('images');
+
 //Add a user to the database
 this.addUser = function() {
   var username = document.getElementById('newusername').value;
   var password = document.getElementById('newpassword').value;
   var email = document.getElementById('newemail').value;
+  var file = document.getElementById('newuserimage').files[0];
+  //document.getElementById("displayImg").src = file;
   // var image = document.getElementById('newimage').value;
   var promise = checkUser(username, password);
   promise.then((result) => {
     if(result) {
       $('#createUserMessage').show();
     } else { //if no user, we can create
-      usersRef.child(username).set({
-        userId: 1,
-        username: username,
-        password: password,
-        email: email,
-        groups: {group1: 1, group2: 2},
-        image: "placeholder"
+      var url = "";
+      imageStorageRef.child(username + "/" + file.name).put(file).then((snapshot)=> {
+        console.log('Uploaded a file!: ', file.name);
+        url = snapshot.downloadURL;
+        console.log('Got download URL ', url);
+        usersRef.child(username).set({
+          userId: 1,
+          username: username,
+          password: password,
+          email: email,
+          groups: {group1: 1, group2: 2},
+          image: url
+        });
+        finishLogin({
+          "username":username, 
+          "email": email,
+          "image": url
+        });
+        addUsersCoords(username, 0, 0);
       });
-      finishLogin({
-        "username":username, 
-        "email": email,
-      })
-      addUsersCoords(username, 0, 0);
       $('#createnewuser').hide();
       $("#createusersuccess").show();
     }
