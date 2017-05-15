@@ -17,7 +17,7 @@ initMap = function() {
     });
 }
 
-newMarker = function(lat, lng, userid, usrname) {
+newMarker = function(lat, lng, usrname) {
   console.log("lat: " + lat + " lng: " + lng);
   var firstLetter = usrname.charAt(0).toUpperCase();
 
@@ -25,21 +25,19 @@ newMarker = function(lat, lng, userid, usrname) {
       position: {lat: parseFloat(lat), lng: parseFloat(lng)},
       map: map,
       animation: google.maps.Animation.DROP,
-      title: JSON.stringify(userid)
+      title: JSON.stringify(usrname)
   });
   if(usrname == localStorage.loggedInUser){
     newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
   }
   else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
-
-  var imgSrc = "http://barnmissionen.se/shop/wp-content/uploads/2012/10/B_Webshop_Footbol.jpg";
   google.maps.event.addListener(newMarker, 'click', function() {
-    var infoString = "Username:" + JSON.stringify(usrname) + "<br> + <img src='" + localStorage.loggedInUserImg +"' height='42' width='42'>";
+    var infoString = "<b>User: </b>" + JSON.stringify(usrname) + 
+    "<br><img src='http://people.kth.se/~lehti/img/" + usrname + ".jpg' height='100' width='100'>";
     infowindow.setContent(infoString);
     infowindow.open(map, newMarker);
-
   });
-  markers.push({"userid" : userid, "marker" : newMarker, "username" : usrname});
+  markers.push({"marker" : newMarker, "username" : usrname});
 }
 deleteMarker = function(lat, lng, userid){
   var result = $.grep(markers, function(e){ return e.userid === userid; });
@@ -49,24 +47,22 @@ deleteMarker = function(lat, lng, userid){
     markers.delete(result[0]);
   }
 }
-updateMarker = function(lat, lng, userid){
-  //console.log("inside updateMarker");
-  var result = $.grep(markers, function(e){ return e.userid === userid; });
+updateMarker = function(lat, lng, username){
+  var result = $.grep(markers, function(e){ return e.username === username; });
   if(result.length == 1){
-    //console.log("result.length ", result.length);
-    //console.log("prevmarker: ", result[0].marker, " user: ", result[0].userid);
     var previousMarker = result[0].marker;
     var updated = new google.maps.LatLng(lat, lng);
     previousMarker.setPosition(updated);
   }
   else if(result.length == 0){
-    console.log("No Marker from that user was found");
+    console.log("No Marker from that user was found, creating a marker");
+    newMarker(lat, lng, username);
   }
   else console.log("More than one marker from that user was found");
 }
 checkMarkers = function(){
   for(var i = 0; i < markers.length; i++){
-    if(markers[i].userid == localStorage.loggedInUserId){
+    if(markers[i].username == localStorage.loggedInUser){
       console.log("this is me");
       markers[i].marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
     }
@@ -93,12 +89,10 @@ toggleInterval = function() {
   }
 }
 
-
 function sharePos(){
     var geoSuccess = function(position) {
     startPos = position;
-    updatePosition(startPos.coords.latitude, startPos.coords.longitude, localStorage.loggedInUserId);
-
+    updatePosition(startPos.coords.latitude, startPos.coords.longitude, localStorage.loggedInUser);
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }

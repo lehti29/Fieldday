@@ -26,9 +26,10 @@ this.addUser = function() {
       username: username,
       password: password,
       email: email,
-      groups: {},
-      image: null
+      groups: {group1: 1, group2: 2},
+      image: "placeholder"
     });
+    addUsersCoords(username, 0, 0);
     $('#createnewuser').hide();
     $('#login').show();
     $("#createusersuccess").show();
@@ -57,8 +58,14 @@ this.checkUser = function(username, password) {
     if(result){
       console.log("Logged in: ", result.username);
       localStorage.loggedInUser = result.username;
-      //localStorage.loggedInUserImg = result.imgPath;
+      if(result.image == null || result.image === "placeholder"){
+        localStorage.loggedInUserImg = "./img/avatar-default.jpg";
+      }
+      else localStorage.loggedInUserImg = result.image;
+      localStorage.loggedInUserMail = result.email;
       document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
+      document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
+      document.getElementById("displayImg").src = localStorage.loggedInUserImg;
       checkMarkers();
       return 1;
     }
@@ -83,9 +90,9 @@ addGroup = function(groupId, groupUsers, admin) {
 };
 
 //Add a users position
-addUsersCoords = function(userId, lat, lng) {
+addUsersCoords = function(username, lat, lng) {
   coordsRef.push({
-    userId: userId,
+    username: username,
     lat: lat,
     lng: lng
   });
@@ -107,14 +114,14 @@ addUserToGroup = function(groupId, userId) {
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
-  var userid = snapshot.val().userid;
+  var username = snapshot.val().username;
   console.log("added ", snapshot.val());
 
   var prom = new Promise(function(resolve, reject) {
     usersRef.on("value", function(snapshot) {
       var user = snapshot.val();
       for (var i = 0; i < Object.keys(user).length; i++) {
-        if(Object.values(user)[i].userId == userid){
+        if(Object.values(user)[i].username == username){
           var usr = Object.values(user)[i].username;
           console.log("user: ", usr);
         }
@@ -133,7 +140,7 @@ coordsRef.on("child_added", function(snapshot) {
     console.log("after");
     if(result){
       console.log("result", result);
-      newMarker(lat, lng, userid, result);
+      newMarker(lat, lng, result);
     }
     else
       console.log("Wrong");
@@ -142,9 +149,9 @@ coordsRef.on("child_added", function(snapshot) {
 coordsRef.on("child_changed", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
-  var userid = snapshot.val().userid
+  var username = snapshot.val().username
   console.log("changed ", snapshot.val());
-  updateMarker(lat, lng, userid);
+  updateMarker(lat, lng, username);
 });
 coordsRef.on("child_removed", function(snapshot) {
   var lat = snapshot.val().lat;
@@ -154,10 +161,10 @@ coordsRef.on("child_removed", function(snapshot) {
   deleteMarker(lat, lng, userid);
 });
 
-function updatePosition(lat, lng, userid){
-  console.log("Updating in firebase: ", lat, lng, userid);
-  firebase.database().ref('coords/' + userid).set({
-    userid: userid,
+function updatePosition(lat, lng, username){
+  console.log("Updating in firebase: ", lat, lng, username);
+  firebase.database().ref('coords/' + username).set({
+    username: username,
     lat: JSON.stringify(lat),
     lng: JSON.stringify(lng)
   });
