@@ -75,6 +75,16 @@ function initSidebar() {
   });
 }
 
+$('.modal.coupled').modal({
+    allowMultiple: true
+  })
+$('#login')
+  .modal('attach events', '#openLogin.button', 'show')
+;
+$('#createnewuser')
+  .modal('attach events', '#createnewuserbutton');
+
+
 initSidebar();
 
 

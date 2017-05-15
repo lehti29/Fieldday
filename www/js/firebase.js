@@ -32,7 +32,6 @@ this.addUser = function() {
     });
     addUsersCoords(username, 0, 0);
     $('#createnewuser').hide();
-    $('#login').show();
     $("#createusersuccess").show();
   }
 };
@@ -43,7 +42,7 @@ this.checkUser = function(username, password) {
     usersRef.child(username).on("value", function(snapshot) { //get only user if exist
       var users = snapshot.val();
       if(users && users.password == password) {
-        $('#login').hide();
+        $('#login').modal('hide');
         resolve(users);
       } else {
         console.log("no user with that username and password");
@@ -71,7 +70,6 @@ this.checkUser = function(username, password) {
       return 1;
     }
     else{
-      console.log("Fel losenord")
       $("#wrongpassword").show();
       return 0;
     }
