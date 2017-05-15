@@ -1,0 +1,169 @@
+/*Message input*/
+input[type=text] {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;	
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+	text-align: center;
+	margin: 24px 0 12px 0;
+	position: relative;
+}
+.chatTopbar {
+	text-align: center;
+	margin: 0 0 -10px 0;
+	position: fixed;
+	font-weight: bold;
+	font-size: 22px;
+	width: 100%;
+    background-color: white; 
+    top: 0;
+    height: 2em;
+    padding-top: 10px;
+}
+
+img.avatar {
+	width: 40%;
+	border-radius: 50%;
+}
+
+.container {
+	padding: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+	span.psw {
+		display: block;
+		float: none;
+	}
+	.cancelbtn {
+		width: 100%;
+	}
+}
+
+#messages {
+	height: 100%;
+	overflow-y: scroll;
+	display: grid;
+	margin: 0 1em 5em 1em;
+
+
+}
+
+#messages::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+.message-container {
+	margin: 2px;
+    margin-bottom: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    -moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px black;
+	box-shadow: 0 0 5px black;
+	border-radius: 25px; //Rundade hörn
+	max-width: 100%;
+    display: inline-block;
+}
+
+.message {
+	font-weight: bold;
+	padding: 6px;
+}
+.name {
+	font-style: italic;
+	padding-left: 10px;
+}
+
+/* Modal Content/Box */
+.contentChat {
+	background-color: #fefefe;
+	border: 1px solid #888;
+	height: 100%;
+}
+
+
+/* The Close Button (x) */
+.closeChat {
+	position: absolute;
+	left: 10px;
+	top: 0;
+	color: #000;
+	font-size: 25px;
+	font-weight: bold;
+	margin-top: 10px;}
+
+.closeChat:hover,
+.closeChat:focus {
+	color: red;
+	cursor: pointer;
+}
+
+#submitChat {
+	border-radius: 50px;
+    width: 4em;
+    height: 4em;
+    position: absolute;
+    background-color: #ee82ee;
+    margin: auto;
+}
+
+/* Set a style for all buttons */
+button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	white-space: nowrap;
+}
+
+button:hover {
+	//opacity: 0.8;
+}
+
+.text-input {
+    border-radius: 25px;
+    width: 100%
+}
+
+#textArea {
+	flex-grow: 7;
+	margin-left: 1em;
+}
+
+#message-form {
+    position: fixed;
+    width: 100%;
+    background-color: white;
+    bottom: 0;
+    height: 5em;
+}
+
+.send {
+	text-align: center;
+	color: white;
+    position: absolute;
+    top: 25%;
+    right: 20%;
+}
+
+#textAndButton {
+	display: flex;
+    width: 100%;
+    margin-top: 6px;
+}
+#buttonArea {
+	flex-grow: 1;
+	margin-left: 2em;
+    margin-right: 4em;
+}

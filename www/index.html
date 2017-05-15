@@ -55,11 +55,11 @@ crossorigin="anonymous"></script>
         <div class="item" id="userView">
             <div class="ui grid">
                 <div class="seven wide column">
-                    <img class="ui tiny circular image" src="./img/avatar-default.jpg">
+                    <img class="ui tiny circular image" id="displayImg" src="./img/avatar-default.jpg">
                 </div>
                 <div class="nine wide column">
                     <h2 id="displayUsername">Angelina</h2>
-                    <h4>Something</h4>
+                    <h4 id="displayMail">Something</h4>
                 </div>
             </div>
         </div>
@@ -86,6 +86,8 @@ crossorigin="anonymous"></script>
                 <i class="large red dont icon" id="sharePosIcon"></i>
             </i>
         </button>
+
+        <a href="chat.html"><button class="circular ui violet icon button iconButtons largerButtons topThreeLeft"><i class="large talk outline icon"></i></button></a>
 
         <!-- Login Screen -->
         <button class="circular ui violet icon button iconButtons largerButtons topRight" id="openLogin">
@@ -140,7 +142,7 @@ crossorigin="anonymous"></script>
 
         <!-- Map -->
         <div id="map"></div>       
-        <script type="text/javascript" src="cordova.js"></script>
+        <!--<script type="text/javascript" src="cordova.js"></script>-->
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/map.js"></script>
         <script type="text/javascript" src="js/firebase.js"></script>
