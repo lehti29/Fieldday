@@ -131,6 +131,7 @@ addUserToGroup = function(groupId, userId) {
 
 
 coordsRef.on("child_added", function(snapshot) {
+   if(!(/chat/.test(location))){
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var username = snapshot.val().username;
@@ -144,21 +145,25 @@ coordsRef.on("child_added", function(snapshot) {
     else
       console.log("Wrong");
   });
-
+}
 });
 coordsRef.on("child_changed", function(snapshot) {
+  if(!(/chat/.test(location))){
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var username = snapshot.val().username;
   console.log("changed ", snapshot.val());
   updateMarker(lat, lng, username);
+}
 });
 coordsRef.on("child_removed", function(snapshot) {
+  if(!(/chat/.test(location))){
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var userid = snapshot.val().username;
   console.log("removed ", snapshot.val());
   deleteMarker(lat, lng, username);
+}
 });
 
 function updatePosition(lat, lng, username){
