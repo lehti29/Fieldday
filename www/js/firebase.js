@@ -27,6 +27,7 @@ this.addUser = function(userId, username, password, groups, image) {
 this.checkUser = function(username, password) {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
+  var uid;
   console.log(username + " " + password)
 
   var promise = new Promise(function(resolve, reject) {
@@ -37,6 +38,7 @@ this.checkUser = function(username, password) {
       for (var i = 0; i < Object.keys(users).length; i++) {
         if(Object.values(users)[i].username == username && Object.values(users)[i].password == password){
           userExist = true;
+          uid = Object.values(users)[i].userId;
           document.getElementById('login').style.display='none'
         }
       }
@@ -56,7 +58,9 @@ this.checkUser = function(username, password) {
     if(result){
       console.log("Logged in");
       localStorage.loggedInUser = username;
+      localStorage.loggedInUserId = uid;
       document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
+      checkMarkers();
     }
     else
       console.log("Wrong username or password, try again");
@@ -119,9 +123,37 @@ addUserToGroup = function(groupId, userId) {
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
-  var userid = snapshot.val().userid
+  var userid = snapshot.val().userid;
   console.log("added ", snapshot.val());
-  newMarker(lat, lng, userid);
+
+  var prom = new Promise(function(resolve, reject) {
+    usersRef.on("value", function(snapshot) {
+      var user = snapshot.val();
+      for (var i = 0; i < Object.keys(user).length; i++) {
+        if(Object.values(user)[i].userId == userid){
+          var usr = Object.values(user)[i].username;
+          console.log("user: ", usr);
+        }
+      }
+      if (usr != null) {
+        resolve(usr);
+      }
+      else {
+        reject(Error("It broke"));
+      }
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }); 
+  });
+  prom.then(function(result) {
+    console.log("after");
+    if(result){
+      console.log("result", result);
+      newMarker(lat, lng, userid, result);
+    }
+    else
+      console.log("Wrong");
+  });
 });
 coordsRef.on("child_changed", function(snapshot) {
   var lat = snapshot.val().lat;
@@ -137,6 +169,13 @@ coordsRef.on("child_removed", function(snapshot) {
   console.log("removed ", snapshot.val());
   deleteMarker(lat, lng, userid);
 });
+
+function getUserDetails(userid){
+  usersRef.orderByChild("userid").equalTo(userid).limitToFirst(1).once("child_added", function(snapshot) {
+    console.log("Hej");
+    return snapshot.val().username;
+    });
+}
 
 function updatePosition(lat, lng, userid){
   console.log("Updating in firebase: ", lat, lng, userid);

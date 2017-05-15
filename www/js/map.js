@@ -16,7 +16,7 @@ initMap = function() {
     });
 }
 
-newMarker = function(lat, lng, userid) {
+newMarker = function(lat, lng, userid, usrname) {
   console.log("lat: " + lat + " lng: " + lng);
   var newMarker = new google.maps.Marker({
       position: {lat: parseFloat(lat), lng: parseFloat(lng)},
@@ -24,10 +24,17 @@ newMarker = function(lat, lng, userid) {
       animation: google.maps.Animation.DROP,
       title: JSON.stringify(userid)
   });
-  console.log("userid: ", userid);
+  if(usrname == localStorage.loggedInUser){
+    console.log("same user");
+    newMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+  }
+  else newMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+  var imgSrc = "http://barnmissionen.se/shop/wp-content/uploads/2012/10/B_Webshop_Footbol.jpg";
   google.maps.event.addListener(newMarker, 'click', function() {
-    infowindow.setContent("User: ", userid);
+    var infoString = "Username:" + JSON.stringify(usrname) + "<br> + <img src='" + imgSrc +"' height='42' width='42'>";
+    infowindow.setContent(infoString);
     infowindow.open(map, newMarker);
+
   });
   markers.push({"userid" : userid, "marker" : newMarker});
 }
@@ -50,13 +57,22 @@ updateMarker = function(lat, lng, userid){
   }
   else console.log("More than one marker from that user was found");
 }
+checkMarkers = function(){
+  for(var i = 0; i < markers.length; i++){
+    if(markers[i].userid == localStorage.loggedInUserId){
+      console.log("this is me");
+      markers[i].marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+    }
+    else markers[i].marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+  }
+}
 sharePos = function(){
     var geoSuccess = function(position) {
     startPos = position;
     //console.log("lat: ", startPos.coords.latitude, " lng: ", startPos.coords.longitude);
     //FIX HARDCODED USER WITH SESSION VARIABLE OR SOME SHIT AND POSITION WITH REAL POS
     //updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
-    updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
+    updatePosition(startPos.coords.latitude, startPos.coords.longitude, localStorage.loggedInUserId);
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
