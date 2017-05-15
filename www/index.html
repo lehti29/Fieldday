@@ -79,7 +79,12 @@ crossorigin="anonymous"></script>
     </div>
     <div class="pusher">
         <button class="circular ui violet icon button iconButtons largerButtons" id="sidebarToggle"><i class="content large icon"></i></button>
-        <button id="sharePos" class="circular ui red icon button iconButtons largerButtons bottomLeft" onclick="sharePos()"><i class="marker large icon"></i> </button>
+        <button id="sharePos" class="circular ui olive icon button iconButtons largerButtons bottomLeft" onclick="toggleInterval()">
+            <i class="big icons">
+                <i class="marker icon"></i> 
+                <i class="large red dont icon" id="sharePosIcon"></i>
+            </i>
+        </button>
 
         <!-- Login Screen -->
         <button onclick="$('#login').show()" class="circular ui violet icon button iconButtons largerButtons topRight">Login</button>

@@ -80,6 +80,11 @@ button.ui.icon.largerButtons {
 	background-color: grey;
 }
 
+#sharePos i.big.icons i {
+	margin: auto;
+} 
+
+
 input[type=text], input[type=password] {
 	width: 100%;
 	padding: 12px 20px;
