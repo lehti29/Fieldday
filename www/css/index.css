@@ -29,6 +29,9 @@ button.ui.icon.largerButtons {
 .topRight {
 	top: 60px;
 }
+.topThreeLeft{
+	top: 110px;
+}
 
 #sidebarToggle {
 	top: 10px;
@@ -121,6 +124,13 @@ button:hover {
 	text-align: center;
 	margin: 24px 0 12px 0;
 	position: relative;
+}
+.imgcontainerChat {
+	text-align: center;
+	margin: 24px 0 -10px 0;
+	position: relative;
+	font-weight: bold;
+	font-size: 22px;
 }
 
 .container {
