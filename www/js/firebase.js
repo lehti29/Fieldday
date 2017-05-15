@@ -30,7 +30,7 @@ this.addUser = function() {
       $('#createUserMessage').show();
     } else { //if no user, we can create
       var url = "";
-      imageStorageRef.child(file.name).put(file).then((snapshot)=> {
+      imageStorageRef.child(username + "/" + file.name).put(file).then((snapshot)=> {
         console.log('Uploaded a file!: ', file.name);
         url = snapshot.downloadURL;
         console.log('Got download URL ', url);
