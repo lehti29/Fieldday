@@ -59,8 +59,8 @@ this.checkUser = function(username, password) {
     if(result){
       console.log("Logged in: ", result.username);
       localStorage.loggedInUser = result.username;
-      if(result.image == null || result.image === "placeholder"){
-        localStorage.loggedInUserImg = "./img/avatar-default.jpg";
+      if(result.image == null || result.image == "placeholder"){
+        localStorage.loggedInUserImg = "./../img/avatar-default.jpg";
       }
       else localStorage.loggedInUserImg = result.image;
       localStorage.loggedInUserMail = result.email;
