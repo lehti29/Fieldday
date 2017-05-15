@@ -66,6 +66,10 @@ button.ui.icon.largerButtons {
 	margin: auto;
 }
 
+#sharePos i.big.icons i {
+	margin: auto;
+} 
+
 /*LoginScreen*/
 
 input[type=text], input[type=password] {

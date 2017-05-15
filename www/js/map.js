@@ -1,5 +1,6 @@
 //Shares your position every fifth second
-var myVar = setInterval(function(){ sharePos() }, 5*1000);
+var shareInterval;
+var isInterval = 0;
 var infowindow;
 var markers = [];
 initMap = function() {
@@ -50,13 +51,29 @@ updateMarker = function(lat, lng, userid){
   }
   else console.log("More than one marker from that user was found");
 }
-sharePos = function(){
+
+toggleInterval = function() {
+  if(isInterval) {
+    console.log("stop sharing");
+    isInterval = 0;
+    clearInterval(shareInterval);
+    $("#sharePosIcon").show();
+  } else {
+    console.log("start sharing");
+    isInterval = 1;
+    $("#sharePosIcon").hide();
+    shareInterval = setInterval(sharePos, 5*1000);
+  }
+}
+
+function sharePos(){
     var geoSuccess = function(position) {
     startPos = position;
-    //console.log("lat: ", startPos.coords.latitude, " lng: ", startPos.coords.longitude);
     //FIX HARDCODED USER WITH SESSION VARIABLE OR SOME SHIT AND POSITION WITH REAL POS
     //updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
-    updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
+    updatePosition(startPos.coords.latitude, startPos.coords.longitude, 1);
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 }
+
+toggleInterval();
