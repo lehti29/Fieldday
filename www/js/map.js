@@ -18,7 +18,7 @@ initMap = function() {
 }
 
 newMarker = function(lat, lng, usrname) {
-  console.log("lat: " + lat + " lng: " + lng);
+  //console.log("lat: " + lat + " lng: " + lng);
   var firstLetter = usrname.charAt(0).toUpperCase();
 
   var newMarker = new google.maps.Marker({

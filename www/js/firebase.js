@@ -66,8 +66,6 @@ this.login = function(username, password) {
       $("#wrongpassword").show();
     }
   })
-  
-  //make a check user
   //start tracking
   //move camera focus
 }
@@ -77,7 +75,7 @@ this.checkUser = function(username, password) {
   var promise = new Promise(function(resolve, reject) {
     usersRef.child(username).on("value", function(snapshot) { //get only user if exist
       var users = snapshot.val();
-      if(users && users.password == password) {
+      if(users && (users.password == password || !password)) {
         resolve(users);
       } else {
         resolve(0);
@@ -111,7 +109,7 @@ addGroup = function(groupId, groupUsers, admin) {
 
 //Add a users position
 addUsersCoords = function(username, lat, lng) {
-  coordsRef.push({
+  coordsRef.child(username).set({
     username: username,
     lat: lat,
     lng: lng
@@ -136,32 +134,12 @@ coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var username = snapshot.val().username;
-  console.log("added ", snapshot.val());
+  //console.log("added ", snapshot.val());
 
-  var prom = new Promise(function(resolve, reject) {
-    usersRef.on("value", function(snapshot) {
-      var user = snapshot.val();
-      for (var i = 0; i < Object.keys(user).length; i++) {
-        if(Object.values(user)[i].username == username){
-          var usr = Object.values(user)[i].username;
-          console.log("user: ", usr);
-        }
-      }
-      if (usr != null) {
-        resolve(usr);
-      }
-      else {
-        reject(Error("It broke"));
-      }
-    }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    }); 
-  });
+  var prom = checkUser(username);
   prom.then(function(result) {
-    console.log("after");
     if(result){
-      console.log("result", result);
-      newMarker(lat, lng, result);
+      newMarker(lat, lng, result.username);
     }
     else
       console.log("Wrong");
