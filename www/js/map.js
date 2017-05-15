@@ -18,6 +18,8 @@ initMap = function() {
 
 newMarker = function(lat, lng, userid, usrname) {
   console.log("lat: " + lat + " lng: " + lng);
+  var firstLetter = usrname.charAt(0).toUpperCase();
+
   var newMarker = new google.maps.Marker({
       position: {lat: parseFloat(lat), lng: parseFloat(lng)},
       map: map,
@@ -25,22 +27,26 @@ newMarker = function(lat, lng, userid, usrname) {
       title: JSON.stringify(userid)
   });
   if(usrname == localStorage.loggedInUser){
-    console.log("same user");
-    newMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+    newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
   }
-  else newMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+  else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
+
   var imgSrc = "http://barnmissionen.se/shop/wp-content/uploads/2012/10/B_Webshop_Footbol.jpg";
   google.maps.event.addListener(newMarker, 'click', function() {
-    var infoString = "Username:" + JSON.stringify(usrname) + "<br> + <img src='" + imgSrc +"' height='42' width='42'>";
+    var infoString = "Username:" + JSON.stringify(usrname) + "<br> + <img src='" + localStorage.loggedInUserImg +"' height='42' width='42'>";
     infowindow.setContent(infoString);
     infowindow.open(map, newMarker);
 
   });
-  markers.push({"userid" : userid, "marker" : newMarker});
+  markers.push({"userid" : userid, "marker" : newMarker, "username" : usrname});
 }
 deleteMarker = function(lat, lng, userid){
-  //newMarker.setMap(null);
-  //markers.delete(newMarker);
+  var result = $.grep(markers, function(e){ return e.userid === userid; });
+  if(result.length == 1){
+    var toBeDeleted = result[0].marker;
+    toBeDeleted.setMap(null);
+    markers.delete(result[0]);
+  }
 }
 updateMarker = function(lat, lng, userid){
   //console.log("inside updateMarker");
@@ -61,9 +67,12 @@ checkMarkers = function(){
   for(var i = 0; i < markers.length; i++){
     if(markers[i].userid == localStorage.loggedInUserId){
       console.log("this is me");
-      markers[i].marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+      markers[i].marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
     }
-    else markers[i].marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+    else {
+      var letter = markers[i].username.charAt(0).toUpperCase();
+      markers[i].marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + letter + '.png');
+    }
   }
 }
 sharePos = function(){

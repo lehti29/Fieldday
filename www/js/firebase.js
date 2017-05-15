@@ -28,6 +28,7 @@ this.checkUser = function(username, password) {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   var uid;
+  var imgPath;
   console.log(username + " " + password)
 
   var promise = new Promise(function(resolve, reject) {
@@ -39,6 +40,7 @@ this.checkUser = function(username, password) {
         if(Object.values(users)[i].username == username && Object.values(users)[i].password == password){
           userExist = true;
           uid = Object.values(users)[i].userId;
+          imgPath = Object.values(users)[i].image;
           document.getElementById('login').style.display='none'
         }
       }
@@ -59,6 +61,7 @@ this.checkUser = function(username, password) {
       console.log("Logged in");
       localStorage.loggedInUser = username;
       localStorage.loggedInUserId = uid;
+      localStorage.loggedInUserImg = imgPath;
       document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
       checkMarkers();
     }
@@ -120,6 +123,7 @@ addUserToGroup = function(groupId, userId) {
 // }, function (errorObject) {
 //   console.log("The read failed: " + errorObject.code);
 // }); 
+
 coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
@@ -169,13 +173,6 @@ coordsRef.on("child_removed", function(snapshot) {
   console.log("removed ", snapshot.val());
   deleteMarker(lat, lng, userid);
 });
-
-function getUserDetails(userid){
-  usersRef.orderByChild("userid").equalTo(userid).limitToFirst(1).once("child_added", function(snapshot) {
-    console.log("Hej");
-    return snapshot.val().username;
-    });
-}
 
 function updatePosition(lat, lng, userid){
   console.log("Updating in firebase: ", lat, lng, userid);
