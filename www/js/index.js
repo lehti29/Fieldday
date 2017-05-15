@@ -32,92 +32,11 @@
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        /*
-            var parentElement = document.getElementById(id);
-            var listeningElement = parentElement.querySelector('.listening');
-            var receivedElement = parentElement.querySelector('.received');
-            listeningElement.setAttribute('style', 'display:none;');
-            receivedElement.setAttribute('style', 'display:block;');
-        }*/
-
 
         if (id == 'deviceready'){
             initMap();
 
             var updates = 0;
-            /*backgroundGeolocation.configure(callbackFn, failureFn, {
-            desiredAccuracy: 10,
-            stationaryRadius: 20,
-            distanceFilter: 30,
-            httpHeaders: { 'X-FOO': 'bar' },
-            maxLocations: 1000,
-            // Android only section 
-            locationProvider: backgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
-            interval: 5000,
-            fastestInterval: 5000,
-            activitiesInterval: 10000,
-            notificationTitle: 'Background tracking',
-            notificationText: 'enabled',
-            notificationIconColor: '#FEDD1E',
-            notificationIconLarge: 'mappointer_large',
-            notificationIconSmall: 'mappointer_small'
-        });
-        var callbackFn = function(location) {
-        console.log('[js] BackgroundGeolocation callback:  ' + 
-          location.latitude + ',' + location.longitude);
-        };
-        var failureFn = function(error) {
-        console.log('BackgroundGeolocation error');
-    };
- 
-        backgroundGeolocation.watchLocationMode(
-          function (enabled) {
-            if (enabled) {
-              // location service are now enabled 
-              // call backgroundGeolocation.start 
-              backgroundGeolocation.start();
-              // only if user already has expressed intent to start service 
-            } else {
-              // location service are now disabled or we don't have permission 
-              // time to change UI to reflect that 
-              backgroundGeolocation.stop();
-            }
-          },
-          function (error) {
-            console.log('Error watching location mode. Error:' + error);
-          }
-        );
-         
-        backgroundGeolocation.isLocationEnabled(function (enabled) {
-          if (enabled) {
-            backgroundGeolocation.start(
-              function () {
-                console.log("started");
-                // service started successfully 
-                // you should adjust your app UI for example change switch element to indicate 
-                // that service is running 
-              },
-              function (error) {
-                // Tracking has not started because of error 
-                // you should adjust your app UI for example change switch element to indicate 
-                // that service is not running 
-                if (error.code === 2) {
-                  if (window.confirm('Not authorized for location updates. Would you like to open app settings?')) {
-                    backgroundGeolocation.showAppSettings();
-                  }
-                } else {
-                  window.alert('Start failed: ' + error.message);  
-                }
-              }
-            );
-          } else {
-            // Location services are disabled 
-            if (window.confirm('Location is disabled. Would you like to open location settings?')) {
-              backgroundGeolocation.showLocationSettings();
-            }
-          }
-        });*/
-
             if(window.cordova){
               console.log("cordova available");
               //initGeoLocationBG();
@@ -159,11 +78,11 @@ deleteMarker = function(lat, lng, userid){
   //markers.delete(newMarker);
 }
 updateMarker = function(lat, lng, userid){
-  console.log("inside updateMarker");
+  //console.log("inside updateMarker");
   var result = $.grep(markers, function(e){ return e.userid === userid; });
   if(result.length == 1){
-    console.log("result.length ", result.length);
-    console.log("prevmarker: ", result[0].marker, " user: ", result[0].userid);
+    //console.log("result.length ", result.length);
+    //console.log("prevmarker: ", result[0].marker, " user: ", result[0].userid);
     var previousMarker = result[0].marker;
     var updated = new google.maps.LatLng(lat, lng);
     previousMarker.setPosition(updated);
@@ -176,7 +95,7 @@ updateMarker = function(lat, lng, userid){
 sharePos = function(){
     var geoSuccess = function(position) {
     startPos = position;
-    console.log("lat: ", startPos.coords.latitude, " lng: ", startPos.coords.longitude);
+    //console.log("lat: ", startPos.coords.latitude, " lng: ", startPos.coords.longitude);
     //FIX HARDCODED USER WITH SESSION VARIABLE OR SOME SHIT AND POSITION WITH REAL POS
     //updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
     updatePosition(startPos.coords.latitude, startPos.coords.longitude, 3);
