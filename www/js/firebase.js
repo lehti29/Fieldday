@@ -195,8 +195,12 @@ addUserToGroup = function(groupId, username) {
     var groupJSON = JSON.parse(localStorage.loggedInUserGroups);
     groupJSON[groupId] = {groupId: groupId};
     localStorage.loggedInUserGroups = JSON.stringify(groupJSON);
-    initCheckboxes();
   }
+  else {
+    localStorage.loggedInUserGroups = JSON.stringify({groupId: groupId});
+  }
+  initCheckboxes();
+
 };
 
 coordsRef.on("child_added", function(snapshot) {
