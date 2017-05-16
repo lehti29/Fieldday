@@ -91,19 +91,36 @@ function initCheckboxes() {
   }
 }
 
-$('.modal.coupled').modal({
-  allowMultiple: true
-})
-$('#login')
-  //.modal('attach events', '#openLogin.button', 'show')
-  //.modal('setting', 'closable', false)
-  .modal('show');
-  ;
-  $('#createnewuser')
-  .modal('attach events', '#createnewuserbutton');
+
+initLogin = function() {
+  if(localStorage.loggedInUser) {
+    console.log("logged in: ", localStorage)
+    document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
+    document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
+    document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+    initCheckboxes();
+  } else {
+
+    $('.modal.coupled').modal({
+      allowMultiple: true
+    })
+    $('#login')
+      //.modal('attach events', '#openLogin.button', 'show')
+      //.modal('setting', 'closable', false)
+      .modal('show');
+      ;
+      $('#createnewuser')
+      .modal('attach events', '#createnewuserbutton');
+    }
+  }
+
+  logout = function() {
+    localStorage.clear();
+    initLogin();
+  }
 
 
+  initLogin();
   initSidebar();
-
 
   app.initialize();

@@ -85,12 +85,9 @@ this.finishLogin = function(result) {
   } else if (localStorage.loggedInUserGroups) {
     localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
   }
-  document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
-  document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
-  document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+  initLogin();
   $('#login').modal('hide');
   checkMarkers();
-  initCheckboxes();
 }
 
 this.login = function(username, password) {
