@@ -32,10 +32,13 @@ newMarker = function(lat, lng, usrname) {
   }
   else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
   google.maps.event.addListener(newMarker, 'click', function() {
-    var infoString = "<b>User: </b>" + JSON.stringify(usrname) + 
-    "<br><img src='http://people.kth.se/~lehti/img/" + usrname + ".jpg' height='100' width='100' alt='Image'>";
-    infowindow.setContent(infoString);
-    infowindow.open(map, newMarker);
+    var imagePromise = getUserImage(usrname);
+    imagePromise.then((result)=>{
+      var infoString = ["<b>User: </b>", JSON.stringify(usrname), 
+      '<br><img src="', result, '" height="100" width="100" alt="Image">'].join("");
+      infowindow.setContent(infoString);
+      infowindow.open(map, newMarker);
+    })
   });
   markers.push({"marker" : newMarker, "username" : usrname});
 }
@@ -83,7 +86,7 @@ toggleInterval = function() {
     clearInterval(shareInterval);
     $("#sharePosIcon").show();
   } else if (localStorage.loggedInUser) {
-    console.log("start sharing ", localStorage);
+    console.log("start sharing ");//, localStorage);
     isInterval = 1;
     $("#sharePosIcon").hide();
     shareInterval = setInterval(sharePos, 5*1000);
