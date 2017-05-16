@@ -75,10 +75,12 @@ function initCheckboxes() {
     $('.checkbox').checkbox().checkbox({
       onChecked: function() {
         displaygroup.push(this.id)
+        showMarkers(this.id);
       },
       onUnchecked: function() {
         var pos = displaygroup.indexOf(this.id);
         displaygroup.splice(pos, 1); //removes 1 item on index pos
+        hideMarkers(this.id);
       },
       onChange: function() {
         console.log("Change called on child: ", this.id, ' with displaygroup: ', displaygroup);

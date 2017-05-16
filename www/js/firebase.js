@@ -171,7 +171,8 @@ coordsRef.on("child_added", function(snapshot) {
   var prom = checkUser(username);
   prom.then(function(result) {
     if(result){
-      newMarker(lat, lng, result.username);
+      console.log("Result.groups", result.groups);
+      newMarker(lat, lng, result.username, result.groups);
     }
     else
       console.log("Wrong");
