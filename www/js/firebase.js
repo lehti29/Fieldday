@@ -118,11 +118,10 @@ this.checkUser = function(username, password) {
 }
 
 //Add a group
-addGroup = function(groupId, groupUsers, admin) {
-  groupsRef.push({
+addGroup = function(groupId, members) {
+  groupsRef.child(groupId)({
     groupId: groupId,
-    groupUsers: groupUsers,
-    admin: admin
+    members: members
   });
 };
 
@@ -136,18 +135,15 @@ addUsersCoords = function(username, lat, lng) {
 };
 
 //Add a user to a group
-addUserToGroup = function(groupId, userId) {
-  var groupRef = firebase.database().ref("groups/"+groupId+"/groupUsers");
-  groupsRef.push({
-    userId: userId
+addUserToGroup = function(groupId, username) {
+  groupsRef.child(groupId+"/members/"+username).set({
+    username: username
   });
 
-  var userGroupRef = firebase.database().ref("users/"+userId+"/groups");
-  groupsRef.push({
+  usersRef.child(username+"/groups/"+groupId).set({
     groupId: groupId
   });
 };
-
 
 coordsRef.on("child_added", function(snapshot) {
    if(!(/chat/.test(location))){
