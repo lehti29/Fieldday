@@ -150,6 +150,8 @@ addUsersCoords = function(username, lat, lng) {
 
 //Add a user to a group
 addUserToGroup = function(groupId, username) {
+  var groupId = document.getElementById('invgroupid');
+  var username = document.getElementById('invusername');
   groupsRef.child(groupId+"/members/"+username).set({
     username: username
   });
