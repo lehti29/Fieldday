@@ -93,9 +93,18 @@ toggleInterval = function() {
 }
 
 function sharePos(){
-    var geoSuccess = function(position) {
+  var geoSuccess = function(position) {
     startPos = position;
     updatePosition(startPos.coords.latitude, startPos.coords.longitude, localStorage.loggedInUser);
   };
-  navigator.geolocation.getCurrentPosition(geoSuccess);
+
+  var geoFail = function(err) {
+    console.log("something went wrong with the geosharing: ", err);
+  }
+
+  var options = {
+    timeout: 5000,
+    maximumAge: 0
+  };
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoFail, options);
 }
