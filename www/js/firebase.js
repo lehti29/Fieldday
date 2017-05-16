@@ -21,9 +21,10 @@ var defaultImg = "../img/avatar-default.jpg";
 this.getUserImage = function(username) {
   var promise = checkUser(username);
   return promise.then((result)=>{
-    if(!result || result.image == 'placeholder') {
+    if(!result.image || result.image == 'placeholder') {
       return defaultImg;
     } else {
+      console.log("image: ", result.image)
       return result.image;
     }
   });
