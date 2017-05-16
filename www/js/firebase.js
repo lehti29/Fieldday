@@ -80,6 +80,8 @@ this.finishLogin = function(result) {
     console.log("there are groups! ")
     console.log(result.groups)
     localStorage.loggedInUserGroups = JSON.stringify(result.groups);
+    console.log(JSON.stringify(result.groups));
+    console.log(result.groups)
   } else if (localStorage.loggedInUserGroups) {
     localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
   }
@@ -192,7 +194,12 @@ addUserToGroup = function(groupId, username) {
   else {
     addGroup(groupId,username);
   }
-  // localStorage.loggedInUserGroups += JSON.stringify({"groupId": groupId.toString()}); //Doesnt seem to work
+  if(localStorage.loggedInUserGroups){
+    var groupJSON = JSON.parse(localStorage.loggedInUserGroups);
+    groupJSON[groupId] = {groupId: groupId};
+    localStorage.loggedInUserGroups = JSON.stringify(groupJSON);
+    initCheckboxes();
+  }
 };
 
 coordsRef.on("child_added", function(snapshot) {
