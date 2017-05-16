@@ -19,7 +19,7 @@
  var app = {
     // Application Constructor
     initialize: function() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+      document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
 
     // deviceready Event Handler
@@ -27,50 +27,53 @@
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
-        this.receivedEvent('deviceready');
+      this.receivedEvent('deviceready');
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 
-        if (id == 'deviceready'){
-            initMap();
-            if(window.cordova){
-              console.log("cordova available");
-            }
+      if (id == 'deviceready'){
+        initMap();
+        if(window.cordova){
+          console.log("cordova available");
         }
+      }
     }
-};
+  };
 
-var displaygroup = [];
+  var displaygroup = [];
 
-function initSidebar() {
-  $('.ui.sidebar').first()
+  function initSidebar() {
+    $('.ui.sidebar').first()
     .sidebar('setting', 'transition', 'overlay')
     .sidebar('setting', 'mobileTransition', 'overlay')
     .sidebar('attach events', '#sidebarToggle');
 
-  $("#sidebarToggle")
+    $("#sidebarToggle")
     .removeClass('disabled');
-}
+  }
 
-function userAddGroup() {
+  function userAddGroup() {
   //TODO!
 }
 
 function initCheckboxes() {
   if(!localStorage.loggedInUserGroups) {
-    console.log("no groups");
+    $('#groupBoxes').append('<button class="ui olive button" onclick="addUserToGroup();"><i class="plus icon"></i> Join group</button>');
   } else {
     var groups = JSON.parse(localStorage.loggedInUserGroups);
     var groupboxes = $('#groupBoxes');
     groupboxes.html("");
     Object.keys(groups).forEach((group)=>{
-      var groupnr = groups[group];
-      var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
+      if(groups[group] != null) {
+        var groupnr = groups[group].groupId;
+        var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
         groupnr, '"><label for="group', groupnr, '">Group ', groupnr, '</label></div></div>'].join("");
-      $('#groupBoxes').append(div);
+        $('#groupBoxes').append(div);
+      }
     });
+    $('#groupBoxes').append('<button class="ui olive button" onclick="addUserToGroup();"><i class="plus icon"></i> Join group</button>');
     
     $('.checkbox').checkbox().checkbox({
       onChecked: function() {
@@ -89,19 +92,36 @@ function initCheckboxes() {
   }
 }
 
-$('.modal.coupled').modal({
-    allowMultiple: true
-  })
-$('#login')
-  //.modal('attach events', '#openLogin.button', 'show')
-  //.modal('setting', 'closable', false)
-  .modal('show');
-;
-$('#createnewuser')
-  .modal('attach events', '#createnewuserbutton');
+
+initLogin = function() {
+  if(localStorage.loggedInUser) {
+    console.log("logged in: ", localStorage)
+    document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
+    document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
+    document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+    initCheckboxes();
+  } else {
+
+    $('.modal.coupled').modal({
+      allowMultiple: true
+    })
+    $('#login')
+      //.modal('attach events', '#openLogin.button', 'show')
+      //.modal('setting', 'closable', false)
+      .modal('show');
+      ;
+      $('#createnewuser')
+      .modal('attach events', '#createnewuserbutton');
+    }
+  }
+
+  logout = function() {
+    localStorage.clear();
+    initLogin();
+  }
 
 
-initSidebar();
+  initLogin();
+  initSidebar();
 
-
-app.initialize();
+  app.initialize();

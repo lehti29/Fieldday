@@ -77,17 +77,17 @@ this.finishLogin = function(result) {
   } else localStorage.loggedInUserImg = result.image;
   localStorage.loggedInUserMail = result.email;
   if(result.groups) {
-    console.log("there are groups! ", result.groups)
+    console.log("there are groups! ")
+    console.log(result.groups)
     localStorage.loggedInUserGroups = JSON.stringify(result.groups);
+    console.log(JSON.stringify(result.groups));
+    console.log(result.groups)
   } else if (localStorage.loggedInUserGroups) {
     localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
   }
-  document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
-  document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
-  document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+  initLogin();
   $('#login').modal('hide');
   checkMarkers();
-  initCheckboxes();
 }
 
 this.login = function(username, password) {
@@ -131,6 +131,33 @@ this.checkUser = function(username, password) {
   });
 }
 
+checkGroup = function(groupId){
+  var promise = new Promise(function(resolve, reject) {
+    groupsRef.child(groupId).on("value", function(snapshot) { //get only group if exist
+      var group = snapshot.val();
+      if(group) {
+        resolve(group);
+      } else {
+        resolve(0);
+      }
+    },
+    function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }); 
+  });
+
+  return promise.then(function(result) {
+    if(result){
+      return result;
+    } else{
+      return 0;
+    }
+  }, function(err) {
+    console.log(err);
+    return 0;
+  });
+}
+
 //Add a group
 addGroup = function(groupId, members) {
   groupsRef.child(groupId)({
@@ -150,23 +177,33 @@ addUsersCoords = function(username, lat, lng) {
 
 //Add a user to a group
 addUserToGroup = function(groupId, username) {
-  var groupId = document.getElementById('invgroupid');
-  var username = document.getElementById('invusername');
-  groupsRef.child(groupId+"/members/"+username).set({
-    username: username
-  });
+  var username = localStorage.loggedInUser;
+  var groupId = prompt("Please enter a groupId:",1);
+  if (checkGroup) {
+    groupsRef.child(groupId+"/members/"+username).set({
+      username: username
+    });
 
-  usersRef.child(username+"/groups/"+groupId).set({
-    groupId: groupId
-  });
+    usersRef.child(username+"/groups/"+groupId).set({
+      groupId: groupId
+    });
+  }
+  else {
+    addGroup(groupId,username);
+  }
+  if(localStorage.loggedInUserGroups){
+    var groupJSON = JSON.parse(localStorage.loggedInUserGroups);
+    groupJSON[groupId] = {groupId: groupId};
+    localStorage.loggedInUserGroups = JSON.stringify(groupJSON);
+    initCheckboxes();
+  }
 };
 
 coordsRef.on("child_added", function(snapshot) {
-   if(!(/chat/.test(location))){
+ if(!(/chat/.test(location))){
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var username = snapshot.val().username;
-  //console.log("added ", snapshot.val());
 
   var prom = checkUser(username);
   prom.then(function(result) {
@@ -181,21 +218,21 @@ coordsRef.on("child_added", function(snapshot) {
 });
 coordsRef.on("child_changed", function(snapshot) {
   if(!(/chat/.test(location))){
-  var lat = snapshot.val().lat;
-  var lng = snapshot.val().lng;
-  var username = snapshot.val().username;
-  console.log("changed ", snapshot.val());
-  updateMarker(lat, lng, username);
-}
+    var lat = snapshot.val().lat;
+    var lng = snapshot.val().lng;
+    var username = snapshot.val().username;
+    console.log("changed ", snapshot.val());
+    updateMarker(lat, lng, username);
+  }
 });
 coordsRef.on("child_removed", function(snapshot) {
   if(!(/chat/.test(location))){
-  var lat = snapshot.val().lat;
-  var lng = snapshot.val().lng;
-  var userid = snapshot.val().username;
-  console.log("removed ", snapshot.val());
-  deleteMarker(lat, lng, username);
-}
+    var lat = snapshot.val().lat;
+    var lng = snapshot.val().lng;
+    var userid = snapshot.val().username;
+    console.log("removed ", snapshot.val());
+    deleteMarker(lat, lng, username);
+  }
 });
 
 function updatePosition(lat, lng, username){
