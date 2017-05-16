@@ -16,6 +16,19 @@ var messagesRef = firebase.database().ref('messages');
 var storage = firebase.storage().ref(); //the image storage
 var imageStorageRef = storage.child('images');
 
+var defaultImg = "../img/avatar-default.jpg";
+
+this.getUserImage = function(username) {
+  var promise = checkUser(username);
+  return promise.then((result)=>{
+    if(!result || result.image == 'placeholder') {
+      return defaultImg;
+    } else {
+      return result.image;
+    }
+  });
+}
+
 //Add a user to the database
 this.addUser = function() {
   var username = document.getElementById('newusername').value;
@@ -59,7 +72,7 @@ this.finishLogin = function(result) {
   console.log("Logged in: ", result.username);
   localStorage.loggedInUser = result.username;
   if(result.image == null || result.image == "placeholder"){
-    localStorage.loggedInUserImg = "../img/avatar-default.jpg";
+    localStorage.loggedInUserImg = defaultImg;
   } else localStorage.loggedInUserImg = result.image;
   localStorage.loggedInUserMail = result.email;
   if(result.groups) {
