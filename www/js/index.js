@@ -65,6 +65,7 @@ function initCheckboxes() {
     var groups = JSON.parse(localStorage.loggedInUserGroups);
     var groupboxes = $('#groupBoxes');
     groupboxes.html("");
+    console.log("groups: ", groups);
     Object.keys(groups).forEach((group)=>{
       if(groups[group] != null) {
         var groupnr = groups[group].groupId;
@@ -92,13 +93,15 @@ function initCheckboxes() {
   }
 }
 
+fillUserView = function() {
+  document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
+  document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
+  document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+}
 
 initLogin = function() {
   if(localStorage.loggedInUser) {
-    console.log("logged in: ", localStorage)
-    document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
-    document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
-    document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+    fillUserView();    
     initCheckboxes();
   } else {
 
@@ -107,7 +110,7 @@ initLogin = function() {
     })
     $('#login')
       //.modal('attach events', '#openLogin.button', 'show')
-      //.modal('setting', 'closable', false)
+      .modal('setting', 'closable', false)
       .modal('show');
       ;
       $('#createnewuser')

@@ -85,7 +85,7 @@ this.finishLogin = function(result) {
   } else if (localStorage.loggedInUserGroups) {
     localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
   }
-  initLogin();
+  fillUserView();
   $('#login').modal('hide');
   checkMarkers();
 }
@@ -99,8 +99,6 @@ this.login = function(username, password) {
       $("#wrongpassword").show();
     }
   })
-  //start tracking
-  //move camera focus
 }
 
 //Checks whether or not the user is in the database and if the password is correct
@@ -197,7 +195,8 @@ addUserToGroup = function(groupId, username) {
     localStorage.loggedInUserGroups = JSON.stringify(groupJSON);
   }
   else {
-    localStorage.loggedInUserGroups = JSON.stringify({groupId: groupId});
+    console.log("groupid: ", groupId)
+    localStorage.loggedInUserGroups = JSON.stringify([{groupId: groupId}]);
   }
   initCheckboxes();
 
