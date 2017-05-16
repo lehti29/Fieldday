@@ -65,7 +65,6 @@ function initCheckboxes() {
     var groups = JSON.parse(localStorage.loggedInUserGroups);
     var groupboxes = $('#groupBoxes');
     groupboxes.html("");
-    console.log("groups! ", groups)
     Object.keys(groups).forEach((group)=>{
       if(groups[group] != null) {
         var groupnr = groups[group].groupId;

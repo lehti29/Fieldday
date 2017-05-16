@@ -204,7 +204,6 @@ coordsRef.on("child_added", function(snapshot) {
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var username = snapshot.val().username;
-  //console.log("added ", snapshot.val());
 
   var prom = checkUser(username);
   prom.then(function(result) {
