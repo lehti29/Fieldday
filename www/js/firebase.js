@@ -53,7 +53,7 @@ this.addUser = function() {
           username: username,
           password: password,
           email: email,
-          groups: {group1: 1, group2: 2},
+          groups: {},
           image: url
         });
         finishLogin({
