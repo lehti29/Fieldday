@@ -52,27 +52,39 @@ function initSidebar() {
 
   $("#sidebarToggle")
     .removeClass('disabled');
+}
 
-  var groups = [1, 2, 4];
+function userAddGroup() {
+  //TODO!
+}
 
-  groups.forEach((group)=>{
-    var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
-      group, '"><label for="group', group, '">Group ', group, '</label></div></div>'].join("");
-    $('#groupBoxes').append(div);
-  });
-  
-  $('.checkbox').checkbox().checkbox({
-    onChecked: function() {
-      displaygroup.push(this.id)
-    },
-    onUnchecked: function() {
-      var pos = displaygroup.indexOf(this.id);
-      displaygroup.splice(pos, 1); //removes 1 item on index pos
-    },
-    onChange: function() {
-      console.log("Change called on child: ", this.id, ' with displaygroup: ', displaygroup);
-    }
-  });
+function initCheckboxes() {
+  if(!localStorage.loggedInUserGroups) {
+    console.log("no groups");
+  } else {
+    var groups = JSON.parse(localStorage.loggedInUserGroups);
+    var groupboxes = $('#groupBoxes');
+    groupboxes.html("");
+    Object.keys(groups).forEach((group)=>{
+      var groupnr = groups[group];
+      var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
+        groupnr, '"><label for="group', groupnr, '">Group ', groupnr, '</label></div></div>'].join("");
+      $('#groupBoxes').append(div);
+    });
+    
+    $('.checkbox').checkbox().checkbox({
+      onChecked: function() {
+        displaygroup.push(this.id)
+      },
+      onUnchecked: function() {
+        var pos = displaygroup.indexOf(this.id);
+        displaygroup.splice(pos, 1); //removes 1 item on index pos
+      },
+      onChange: function() {
+        console.log("Change called on child: ", this.id, ' with displaygroup: ', displaygroup);
+      }
+    });
+  }
 }
 
 $('.modal.coupled').modal({
