@@ -16,6 +16,20 @@ var messagesRef = firebase.database().ref('messages');
 var storage = firebase.storage().ref(); //the image storage
 var imageStorageRef = storage.child('images');
 
+var defaultImg = "../img/avatar-default.jpg";
+
+this.getUserImage = function(username) {
+  var promise = checkUser(username);
+  return promise.then((result)=>{
+    if(!result.image || result.image == 'placeholder') {
+      return defaultImg;
+    } else {
+      console.log("image: ", result.image)
+      return result.image;
+    }
+  });
+}
+
 //Add a user to the database
 this.addUser = function() {
   var username = document.getElementById('newusername').value;
@@ -39,7 +53,7 @@ this.addUser = function() {
           username: username,
           password: password,
           email: email,
-          groups: {group1: 1, group2: 2},
+          groups: {},
           image: url
         });
         finishLogin({
@@ -59,21 +73,21 @@ this.finishLogin = function(result) {
   console.log("Logged in: ", result.username);
   localStorage.loggedInUser = result.username;
   if(result.image == null || result.image == "placeholder"){
-    localStorage.loggedInUserImg = "../img/avatar-default.jpg";
+    localStorage.loggedInUserImg = defaultImg;
   } else localStorage.loggedInUserImg = result.image;
   localStorage.loggedInUserMail = result.email;
   if(result.groups) {
-    console.log("there are groups! ", result.groups)
+    console.log("there are groups! ")
+    console.log(result.groups)
     localStorage.loggedInUserGroups = JSON.stringify(result.groups);
+    console.log(JSON.stringify(result.groups));
+    console.log(result.groups)
   } else if (localStorage.loggedInUserGroups) {
     localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
   }
-  document.getElementById("displayUsername").innerHTML = localStorage.loggedInUser;
-  document.getElementById("displayMail").innerHTML = localStorage.loggedInUserMail;
-  document.getElementById("displayImg").src = localStorage.loggedInUserImg;
+  fillUserView();
   $('#login').modal('hide');
   checkMarkers();
-  initCheckboxes();
 }
 
 this.login = function(username, password) {
@@ -85,8 +99,6 @@ this.login = function(username, password) {
       $("#wrongpassword").show();
     }
   })
-  //start tracking
-  //move camera focus
 }
 
 //Checks whether or not the user is in the database and if the password is correct
@@ -117,12 +129,38 @@ this.checkUser = function(username, password) {
   });
 }
 
+checkGroup = function(groupId){
+  var promise = new Promise(function(resolve, reject) {
+    groupsRef.child(groupId).on("value", function(snapshot) { //get only group if exist
+      var group = snapshot.val();
+      if(group) {
+        resolve(group);
+      } else {
+        resolve(0);
+      }
+    },
+    function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }); 
+  });
+
+  return promise.then(function(result) {
+    if(result){
+      return result;
+    } else{
+      return 0;
+    }
+  }, function(err) {
+    console.log(err);
+    return 0;
+  });
+}
+
 //Add a group
-addGroup = function(groupId, groupUsers, admin) {
-  groupsRef.push({
+addGroup = function(groupId, members) {
+  groupsRef.child(groupId)({
     groupId: groupId,
-    groupUsers: groupUsers,
-    admin: admin
+    members: members
   });
 };
 
@@ -136,30 +174,45 @@ addUsersCoords = function(username, lat, lng) {
 };
 
 //Add a user to a group
-addUserToGroup = function(groupId, userId) {
-  var groupRef = firebase.database().ref("groups/"+groupId+"/groupUsers");
-  groupsRef.push({
-    userId: userId
-  });
+addUserToGroup = function(groupId, username) {
+  var username = localStorage.loggedInUser;
+  var groupId = prompt("Please enter a groupId:",1);
+  if (checkGroup) {
+    groupsRef.child(groupId+"/members/"+username).set({
+      username: username
+    });
 
-  var userGroupRef = firebase.database().ref("users/"+userId+"/groups");
-  groupsRef.push({
-    groupId: groupId
-  });
+    usersRef.child(username+"/groups/"+groupId).set({
+      groupId: groupId
+    });
+  }
+  else {
+    addGroup(groupId,username);
+  }
+  if(localStorage.loggedInUserGroups){
+    var groupJSON = JSON.parse(localStorage.loggedInUserGroups);
+    groupJSON[groupId] = {groupId: groupId};
+    localStorage.loggedInUserGroups = JSON.stringify(groupJSON);
+  }
+  else {
+    console.log("groupid: ", groupId)
+    localStorage.loggedInUserGroups = JSON.stringify([{groupId: groupId}]);
+  }
+  initCheckboxes();
+
 };
 
-
 coordsRef.on("child_added", function(snapshot) {
-   if(!(/chat/.test(location))){
+ if(!(/chat/.test(location))){
   var lat = snapshot.val().lat;
   var lng = snapshot.val().lng;
   var username = snapshot.val().username;
-  //console.log("added ", snapshot.val());
 
   var prom = checkUser(username);
   prom.then(function(result) {
     if(result){
-      newMarker(lat, lng, result.username);
+      console.log("Result.groups", result.groups);
+      newMarker(lat, lng, result.username, result.groups);
     }
     else
       console.log("Wrong");
@@ -168,21 +221,21 @@ coordsRef.on("child_added", function(snapshot) {
 });
 coordsRef.on("child_changed", function(snapshot) {
   if(!(/chat/.test(location))){
-  var lat = snapshot.val().lat;
-  var lng = snapshot.val().lng;
-  var username = snapshot.val().username;
-  console.log("changed ", snapshot.val());
-  updateMarker(lat, lng, username);
-}
+    var lat = snapshot.val().lat;
+    var lng = snapshot.val().lng;
+    var username = snapshot.val().username;
+    console.log("changed ", snapshot.val());
+    updateMarker(lat, lng, username);
+  }
 });
 coordsRef.on("child_removed", function(snapshot) {
   if(!(/chat/.test(location))){
-  var lat = snapshot.val().lat;
-  var lng = snapshot.val().lng;
-  var userid = snapshot.val().username;
-  console.log("removed ", snapshot.val());
-  deleteMarker(lat, lng, username);
-}
+    var lat = snapshot.val().lat;
+    var lng = snapshot.val().lng;
+    var userid = snapshot.val().username;
+    console.log("removed ", snapshot.val());
+    deleteMarker(lat, lng, username);
+  }
 });
 
 function updatePosition(lat, lng, username){
