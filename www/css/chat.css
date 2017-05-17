@@ -49,7 +49,7 @@ img.avatar {
 #messages {
 	height: 100%;
 	overflow-y: scroll;
-	display: grid;
+	//display: grid;
 	margin: 0 1em 5em 1em;
 
 
@@ -68,9 +68,10 @@ img.avatar {
     -moz-box-shadow: 0 0 5px #888;
 	-webkit-box-shadow: 0 0 5px black;
 	box-shadow: 0 0 5px black;
-	border-radius: 25px; //Rundade hörn
-	max-width: 100%;
+	border-radius: 17px; //Rundade hörn, 25
+	max-width: 70%;
     display: inline-block;
+    clear: both;
 }
 
 .message {
