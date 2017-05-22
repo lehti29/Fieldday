@@ -4,35 +4,18 @@ input[type=text] {
 	padding: 12px 20px;
 	margin: 8px 0;
 	display: inline-block;
-	border: 1px solid #ccc;	
+	border: 1px solid #ccc;
+    border-radius: 25px;	
 }
 
-/* Center the image and position the close button */
-.imgcontainer {
-	text-align: center;
-	margin: 24px 0 12px 0;
-	position: relative;
-}
 .chatTopbar {
 	text-align: center;
-	margin: 0 0 -10px 0;
 	position: fixed;
-	font-weight: bold;
-	font-size: 22px;
 	width: 100%;
     background-color: white; 
     top: 0;
-    height: 2em;
+    height: 7vh;
     padding-top: 10px;
-}
-
-img.avatar {
-	width: 40%;
-	border-radius: 50%;
-}
-
-.container {
-	padding: 16px;
 }
 
 /* Change styles for span and cancel button on extra small screens */
@@ -47,12 +30,12 @@ img.avatar {
 }
 
 #messages {
-	height: 100%;
 	overflow-y: scroll;
-	//display: grid;
-	margin: 0 1em 5em 1em;
-
-
+	position: absolute;
+	top:7vh;
+	bottom:12vh;
+	width:100%;
+	padding: 0 5px;
 }
 
 #messages::-webkit-scrollbar {
@@ -60,81 +43,42 @@ img.avatar {
     background: transparent;  /* optional: just make scrollbar invisible */
 }
 
-.message-container {
+.message-container.ui.message {
+	position: static;
 	margin: 2px;
-    margin-bottom: 12px;
-    padding-left: 8px;
-    padding-right: 8px;
     -moz-box-shadow: 0 0 5px #888;
-	-webkit-box-shadow: 0 0 5px black;
-	box-shadow: 0 0 5px black;
-	border-radius: 17px; //Rundade hörn, 25
+	-webkit-box-shadow: 0 0 5px #888;
+	box-shadow: 0 0 5px #888;
 	max-width: 70%;
     display: inline-block;
-    clear: both;
 }
 
-.message {
-	font-weight: bold;
-	padding: 6px;
+.message-container.ui.message:last-child {
+    margin-bottom: 12px;
 }
+
+.ui.message.ownMessage {
+	background-color: #ee82ee;
+	float:right;
+}
+
 .name {
 	font-style: italic;
 	padding-left: 10px;
 }
 
-/* Modal Content/Box */
-.contentChat {
-	background-color: #fefefe;
-	border: 1px solid #888;
-	height: 100%;
-}
-
-
 /* The Close Button (x) */
 .closeChat {
 	position: absolute;
-	left: 10px;
-	top: 0;
+	left: 10px; top: 10px;
 	color: #000;
-	font-size: 25px;
-	font-weight: bold;
-	margin-top: 10px;}
-
-.closeChat:hover,
-.closeChat:focus {
-	color: red;
 	cursor: pointer;
 }
 
 #submitChat {
-	border-radius: 50px;
-    width: 4em;
-    height: 4em;
+    width: 8vh;
+    height: 8vh;
     position: absolute;
-    background-color: #ee82ee;
-    margin: auto;
-}
-
-/* Set a style for all buttons */
-button {
-	background-color: #4CAF50;
-	color: white;
-	padding: 14px 20px;
-	margin: 8px 0;
-	border: none;
-	cursor: pointer;
-	width: 100%;
-	white-space: nowrap;
-}
-
-button:hover {
-	//opacity: 0.8;
-}
-
-.text-input {
-    border-radius: 25px;
-    width: 100%
 }
 
 #textArea {
@@ -147,20 +91,11 @@ button:hover {
     width: 100%;
     background-color: white;
     bottom: 0;
-    height: 5em;
-}
-
-.send {
-	text-align: center;
-	color: white;
-    position: absolute;
-    top: 25%;
-    right: 20%;
+    height: 12vh;
 }
 
 #textAndButton {
 	display: flex;
-    width: 100%;
     margin-top: 6px;
 }
 #buttonArea {
