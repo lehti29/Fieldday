@@ -272,6 +272,7 @@ saveMessage = function() {
     this.messagesRef.push({
       name: currentUser,
       text: this.messageInput.value,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
     }).then(function() {
       //Clear message text in textfield
       var mess = this.messageInput;
