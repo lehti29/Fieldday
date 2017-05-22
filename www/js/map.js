@@ -58,14 +58,14 @@ newMarker = function(lat, lng, username, groups) {
         title: JSON.stringify(username)
     });
     if(username == localStorage.loggedInUser ){
-        newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
+        newMarker.setIcon('https://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
         map.setCenter({lat:parseFloat(lat), lng:parseFloat(lng)});
     }
     else if (localStorage.displayedGroups && localStorage.displayedGroups.includes(parseInt(group))) {
-      newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
+      newMarker.setIcon('https://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
     }
     else {
-      newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
+      newMarker.setIcon('https://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
       newMarker.setVisible(false);
     }
     google.maps.event.addListener(newMarker, 'click', function() {
