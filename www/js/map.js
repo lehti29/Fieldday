@@ -26,10 +26,11 @@ initMap = function() {
     });
 }
 showMarkers = function(groupNumber){
-  console.log("GROUP: ", groupNumber);
-  var gnumber = groupNumber.substring(5);
-  console.log("Show groups: ", gnumber);
-  console.log("ma: ", markers[gnumber]);
+  console.log(groupNumber);
+
+  var gnumber = groupNumber;
+  console.log("Show markers: ", markers, " gnumber: ", gnumber);
+  console.log("ma: ", markers[parseInt(gnumber)-1]);
   markers[gnumber].forEach(function(entry) {
     console.log("Entry: ", entry);
     if(!entry.marker.getVisible()){
@@ -57,9 +58,13 @@ newMarker = function(lat, lng, username, groups) {
         animation: google.maps.Animation.DROP,
         title: JSON.stringify(username)
     });
-    if(username == localStorage.loggedInUser){
-      newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
-      map.setCenter({lat:parseFloat(lat), lng:parseFloat(lng)});
+    
+    if(username == localStorage.loggedInUser ){
+        newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
+        map.setCenter({lat:parseFloat(lat), lng:parseFloat(lng)});
+    }
+    else if (localStorage.displayedGroups.includes(parseInt(group))) {
+      newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
     }
     else {
       newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');

@@ -64,19 +64,19 @@ function initCheckboxes() {
   console.log("huhm")
   if(localStorage.loggedInUserGroups) {
     var groups = JSON.parse(localStorage.loggedInUserGroups);
+    var dispGroups = localStorage.displayedGroups.split(",");
     console.log("HERHEREHEHER: ", groups);
+    console.log("displaaaaaay: ", dispGroups);
     Object.keys(groups).forEach((group)=>{
       if(groups[group] != null) {
         var groupnr = groups[group].groupId;
         var checked = "";
-        if(localStorage.displayedGroups.includes(groupnr)){
+        console.log("groupnr: ", groupnr);
+        if(dispGroups.includes(groupnr)){
+          console.log("checked");
           checked = "checked";
         }
-        /*for (var g in localStorage.displayedGroups){
-          if (groupnr === g){
-            checked = "checked";
-          }
-        }*/
+
         var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
         groupnr, '"', checked, '><label for="group', groupnr, '">Group ', groupnr, '</label></div></div>'].join("");
         groupboxes.append(div);
@@ -85,9 +85,14 @@ function initCheckboxes() {
     
     $('.checkbox').checkbox().checkbox({
       onChecked: function() {
-        displaygroup.push(this.id)
+        console.log("before onchecked: ", displaygroup);
+        var group = this.id.split("group")[1];
+        if(!displaygroup.includes(this.id)){
+          displaygroup.push(group);
+        }
+        console.log("onchecked: ", displaygroup);
         localStorage.displayedGroups = displaygroup;
-        showMarkers(this.id);
+        showMarkers(group);
       },
       onUnchecked: function() {
         var pos = displaygroup.indexOf(this.id);
