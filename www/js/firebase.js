@@ -156,6 +156,7 @@ addGroup = function(groupId, members) {
     groupId: groupId,
     members: members
   });
+  createList(groupId);
 };
 
 //Add a users position
@@ -196,6 +197,34 @@ addUserToGroup = function(groupId, username) {
 
 };
 
+//Gets the groups that a user is in
+getGroups = function(username){
+  var promise = new Promise(function(resolve, reject) {
+    usersRef.child(username).on("value", function(snapshot) { //get only group if exist
+      var groups = snapshot.val().groups;
+      if(groups) {
+        resolve(groups);
+      } else {
+        resolve(0);
+      }
+    },
+    function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    }); 
+  });
+
+  return promise.then(function(result) {
+    if(result){
+      return result;
+    } else{
+      return 0;
+    }
+  }, function(err) {
+    console.log(err);
+    return 0;
+  });
+};
+
 coordsRef.on("child_added", function(snapshot) {
  if(!(/chat/.test(location))){
   var lat = snapshot.val().lat;
@@ -218,7 +247,17 @@ coordsRef.on("child_changed", function(snapshot) {
     var lng = snapshot.val().lng;
     var username = snapshot.val().username;
     console.log("changed ", snapshot.val());
-    updateMarker(lat, lng, username);
+
+    var groups = getGroups(username);
+    groups.then((result) => {
+    if(result) {
+      console.log("Got groups!");
+      updateMarker(lat, lng, username, result);
+    } else { //if no group
+      console.log("This user is not part of any group");
+      updateMarker(lat, lng, username, result);
+    }
+  })
   }
 });
 coordsRef.on("child_removed", function(snapshot) {

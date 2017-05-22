@@ -2,29 +2,32 @@
 var shareInterval;
 var isInterval = 0;
 var infowindow;
-var markers = [[], [], [], [], [], [], [], [], []];
-var markers1 = [];
-var markers2 = [];
-var markers3 = [];
-var markers4 = [];
-var markers5 = [];
-var markers6 = [];
-var markers7 = [];
+var markers = [];
+
+//Adds a list to the list
+createList = function(groupNumber){
+  if(markers.length === groupNumber){
+    markers[groupNumber] = [];
+  }
+}
 initMap = function() {
     infowindow = new google.maps.InfoWindow();
     var sthlm = {lat: 59.337479, lng: 18.072797};
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 14,
+      zoom: 16,
       center: sthlm,
-      mapTypeControl: true, //moves the type buttons to the center
+      disableDefaultUI: true,
+      zoomControl: true,
+      mapTypeControl: true, //moves the type buttons to the right
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-        position: google.maps.ControlPosition.TOP_CENTER
+        position: google.maps.ControlPosition.TOP_RIGHT
       }
     });
 }
 showMarkers = function(groupNumber){
-  var gnumber = groupNumber.charAt(groupNumber.length -1)
+  console.log("GROUP: ", groupNumber);
+  var gnumber = groupNumber.substring(5);
   console.log("Show groups: ", gnumber);
   console.log("ma: ", markers[gnumber]);
   markers[gnumber].forEach(function(entry) {
@@ -35,12 +38,10 @@ showMarkers = function(groupNumber){
   });
 }
 hideMarkers = function(groupNumber){
-  var gnumber = groupNumber.charAt(groupNumber.length -1)
-  console.log("Show groups: ", gnumber);
-  console.log("ma: ", markers[gnumber]);
+  var gnumber = groupNumber.substring(5);
   markers[gnumber].forEach(function(entry) {
     console.log("Entry: ", entry);
-    if(entry.marker.getVisible()){
+    if(entry.marker.getVisible() && entry.username != localStorage.loggedInUser){
       entry.marker.setVisible(false);
     } 
   });
@@ -49,8 +50,7 @@ hideMarkers = function(groupNumber){
 newMarker = function(lat, lng, username, groups) {
   var firstLetter = username.charAt(0).toUpperCase();
   for (var group in groups){
-    var groupNumber = group.charAt(group.length - 1);
-    if(groupNumber == null) return;
+    if(group == null) return;
     var newMarker = new google.maps.Marker({
         position: {lat: parseFloat(lat), lng: parseFloat(lng)},
         map: map,
@@ -59,8 +59,12 @@ newMarker = function(lat, lng, username, groups) {
     });
     if(username == localStorage.loggedInUser){
       newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
+      map.setCenter({lat:parseFloat(lat), lng:parseFloat(lng)});
     }
-    else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
+    else {
+      newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
+      newMarker.setVisible(false);
+    }
     google.maps.event.addListener(newMarker, 'click', function() {
       getUserImage(username).then((result)=>{
         var infoString = ["<b>User: </b>", JSON.stringify(username), 
@@ -69,8 +73,10 @@ newMarker = function(lat, lng, username, groups) {
         infowindow.open(map, newMarker);
       })
     });
-    newMarker.setVisible(false);
-    markers[groupNumber].push({"marker" : newMarker, "username" : username});
+    if(markers[group] == null){
+      markers[group] = [];
+    }
+    markers[group].push({"marker" : newMarker, "username" : username});
   }
 }
 
@@ -84,19 +90,24 @@ deleteMarker = function(lat, lng, username){
     markers.delete(result[0]);
   }
 }
-updateMarker = function(lat, lng, username){
-  var result = $.grep(markers, function(e){ return e.username === username; });
-  if(result.length == 1){
-    var previousMarker = result[0].marker;
-    var updated = new google.maps.LatLng(lat, lng);
-    previousMarker.setPosition(updated);
+updateMarker = function(lat, lng, username, groups){
+  for (var group in groups){
+    if(group == null) continue;
+    var result = $.grep(markers[group], function(e){ return e.username === username; });
+    if(result.length == 1){
+      var previousMarker = result[0].marker;
+      var updated = new google.maps.LatLng(lat, lng);
+      previousMarker.setPosition(updated);
+      //console.log("New position for ", username, " in group: ", group);
+    }
+    else if(result.length == 0){
+      console.log("No Marker from that user was found, creating a marker");
+      newMarker(lat, lng, username);
+    }
+    else console.log("More than one marker from that user was found");
   }
-  else if(result.length == 0){
-    console.log("No Marker from that user was found, creating a marker");
-    newMarker(lat, lng, username);
-  }
-  else console.log("More than one marker from that user was found");
 }
+
 checkMarkers = function(){
   /*for(var i = 0; i < markers.length; i++){
     if(markers[i].username == localStorage.loggedInUser){
