@@ -240,8 +240,6 @@ function updatePosition(lat, lng, username){
   });
 }
 
-
-//Nytt
 function Chat() {
   this.theMessages = document.getElementById('messages');
   this.messageForm = document.getElementById('message-form');
@@ -253,27 +251,23 @@ function Chat() {
   this.messageForm.addEventListener('submitChat', this.saveMessage.bind(this));
   this.loadMessages();
   console.log("Chat");
-  //Set groupname
-  this.groupName.innerHTML="GroupName"; //Här sätts gruppnamnet i topbaren
-  console.log("Gruppnamnet ska va satt nu...");
+  //Name in topbar
+  this.groupName.innerHTML="Group Chat";
 }
 
 loadMessages = function() {
   this.messagesRef.off();
-  //Load the last 15 messages and new ones.
   var setMessage = function(data){
     var val = data.val();
     this.displayMessage(data.key, val.name, val.text); 
   }.bind(this);
   this.messagesRef.limitToLast(20).on('child_added', setMessage);
   this.messagesRef.limitToLast(20).on('child_changed', setMessage);
-  console.log("loadMessages");
 };
 
 saveMessage = function() {
-  //Message entered check
   if (this.messageInput.value) {
-    var currentUser = anvandaren; //ANVÄNDAREN HÄR
+    var currentUser = anvandaren;
     //Add message
     this.messagesRef.push({
       name: currentUser,
@@ -289,33 +283,32 @@ saveMessage = function() {
   }
 };
 
-//Message Template, user blue: #417cff max-width: 100%; style="color: white;""
-Chat.MESSAGE_TEMPLATE_USER =
-'<div>'+
-
-'<div class="message-container" id="message-container" style="background-color: #ee82ee; float: right; margin-top: 8px;">' +
+//Display messages (Eventually Margin Bottom 1em)
+Chat.MESSAGE_USER =
+'<div style="min-height: 4em; width: 100%; clear: both;">'+
+'<div class="message-container" id="message-container" style="background-color: #ee82ee; float: right; margin-top: 8px; max-width: 70%;">' +
 '<div class="message"></div>' +
 '</div>'+
 '</div>';
 
-Chat.MESSAGE_TEMPLATE_NOT_USER =
-'<div>'+
+Chat.MESSAGE_NOT_USER =
+'<div style="min-height: 4em; width: 100%; margin-bottom: 0.4em; clear: both;">'+
 '<div class="name"></div>' +
-'<div class="message-container" id="message-container" style="background-color: #eaeaea">' +
+'<div class="message-container" id="message-container" style="background-color: #eaeaea; max-width: 70%;">' +
 '<div class="message"></div>' +
 '</div>'+
 '</div>';
 
 displayMessage = function(key, name, text) {
   var div = document.getElementById(key);
-  // If an element for that message does not exists yet - it is created
+  // Create message if not existing
   if (!div) {
     var container = document.createElement('div');
     //Color the "bubbles" depending on user or others...
     if(name == anvandaren){
-      container.innerHTML = Chat.MESSAGE_TEMPLATE_USER;
+      container.innerHTML = Chat.MESSAGE_USER;
     }else{
-      container.innerHTML = Chat.MESSAGE_TEMPLATE_NOT_USER;
+      container.innerHTML = Chat.MESSAGE_NOT_USER;
     }
     div = container.firstChild;
     div.setAttribute('id', key);
@@ -325,13 +318,12 @@ displayMessage = function(key, name, text) {
     div.querySelector('.name').textContent = name;
   }
   var messageElement = div.querySelector('.message');  
-  if (text) { // If text message
+  if (text) { 
     messageElement.textContent = text;
-    //Line breaks replaced by <br>
     messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');    
   }
-  // Always scroll so last message is visible
-  document.getElementById(key).style.width = "100%";
+  // Scroll til last message
+  //---document.getElementById(key).style.width = "100%";
   //document.getElementById(key).style.display = "inline-block"; 
   div.classList.add('visible');
   this.theMessages.scrollTop = this.theMessages.scrollHeight;
