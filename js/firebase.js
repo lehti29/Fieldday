@@ -23,7 +23,6 @@ this.getUserImage = function(username) {
     if(!result.image || result.image == 'placeholder') {
       return defaultImg;
     } else {
-      console.log("image: ", result.image)
       return result.image;
     }
   });
@@ -35,8 +34,6 @@ this.addUser = function() {
   var password = document.getElementById('newpassword').value;
   var email = document.getElementById('newemail').value;
   var file = document.getElementById('newuserimage').files[0];
-  //document.getElementById("displayImg").src = file;
-  // var image = document.getElementById('newimage').value;
   var promise = checkUser(username, password);
   promise.then((result) => {
     if(result) {
@@ -191,7 +188,6 @@ addUserToGroup = function(groupId, username) {
     localStorage.loggedInUserGroups = JSON.stringify(groupJSON);
   }
   else {
-    console.log("groupid: ", groupId)
     localStorage.loggedInUserGroups = JSON.stringify([{groupId: groupId}]);
   }
   initCheckboxes();
@@ -247,15 +243,11 @@ coordsRef.on("child_changed", function(snapshot) {
     var lat = snapshot.val().lat;
     var lng = snapshot.val().lng;
     var username = snapshot.val().username;
-    console.log("changed ", snapshot.val());
-
     var groups = getGroups(username);
     groups.then((result) => {
     if(result) {
-      console.log("Got groups!");
       updateMarker(lat, lng, username, result);
     } else { //if no group
-      console.log("This user is not part of any group");
       updateMarker(lat, lng, username, result);
     }
   })
@@ -290,7 +282,6 @@ function Chat() {
   // Saves message on formsubmit'en.
   this.messageForm.addEventListener('submitChat', this.saveMessage.bind(this));
   this.loadMessages();
-  console.log("Chat");
   //Name in topbar
   this.groupName.innerHTML="Group Chat";
 }
@@ -317,7 +308,6 @@ saveMessage = function() {
       //Clear message text in textfield
       var mess = this.messageInput;
       mess.value = '';
-      console.log("saveMessage");
     }.bind(this)).catch(function(error) {
       console.error("Error when writing new messages to database", error);
     });
@@ -365,5 +355,4 @@ displayMessage = function(key, name, text) {
   // Scroll til last message
   div.classList.add('visible');
   this.theMessages.scrollTop = this.theMessages.scrollHeight;
-  console.log("displayMessage");
 };

@@ -26,7 +26,6 @@ initMap = function() {
     });
 }
 showMarkers = function(groupNumber){
-  console.log("groupnumber: ", groupNumber);
   var gnumber = groupNumber;
   markers[gnumber].forEach(function(entry) {
     if(!entry.marker.getVisible()){
@@ -35,7 +34,6 @@ showMarkers = function(groupNumber){
   });
 }
 hideMarkers = function(groupNumber){
-  console.log("groupnumber: ", groupNumber);
   var gnumber = groupNumber;
   markers[gnumber].forEach(function(entry) {
     if(entry.marker.getVisible() && entry.username != localStorage.loggedInUser){
@@ -48,7 +46,6 @@ newMarker = function(lat, lng, username, groups) {
   var firstLetter = username.charAt(0).toUpperCase();
   for (var group in groups){
     if(group == null && username != localStorage.loggedInUser) {
-      console.log("groups?");
       return;
     }
     var newMarker = new google.maps.Marker({
@@ -88,7 +85,6 @@ deleteMarkers = function(){
     if(markers[i] != null){
       var list = markers[i];
       list.forEach(function(entry) {
-      console.log("Entry: ", entry);
       entry.marker.setMap(null);  
     });
     }
