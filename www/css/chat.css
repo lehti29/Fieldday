@@ -14,7 +14,7 @@ input[type=text] {
 	width: 100%;
     background-color: white; 
     top: 0;
-    height: 2em;
+    height: 7vh;
     padding-top: 10px;
 }
 
@@ -31,7 +31,11 @@ input[type=text] {
 
 #messages {
 	overflow-y: scroll;
-	margin: 0 1em 5em 1em;
+	position: absolute;
+	top:7vh;
+	bottom:12vh;
+	width:100%;
+	padding: 0 5px;
 }
 
 #messages::-webkit-scrollbar {
@@ -72,8 +76,8 @@ input[type=text] {
 }
 
 #submitChat {
-    width: 4em;
-    height: 4em;
+    width: 8vh;
+    height: 8vh;
     position: absolute;
 }
 
@@ -87,7 +91,7 @@ input[type=text] {
     width: 100%;
     background-color: white;
     bottom: 0;
-    height: 5em;
+    height: 12vh;
 }
 
 #textAndButton {
