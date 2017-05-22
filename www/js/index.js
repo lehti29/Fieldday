@@ -61,19 +61,14 @@ function userAddGroup() {
 function initCheckboxes() {
   var groupboxes = $('#groupBoxes');
   groupboxes.html("");
-  console.log("huhm")
   if(localStorage.loggedInUserGroups) {
     var groups = JSON.parse(localStorage.loggedInUserGroups);
     var dispGroups = localStorage.displayedGroups.split(",");
-    console.log("HERHEREHEHER: ", groups);
-    console.log("displaaaaaay: ", dispGroups);
     Object.keys(groups).forEach((group)=>{
       if(groups[group] != null) {
         var groupnr = groups[group].groupId;
         var checked = "";
-        console.log("groupnr: ", groupnr);
         if(dispGroups.includes(groupnr)){
-          console.log("checked");
           checked = "checked";
         }
 
@@ -89,7 +84,6 @@ function initCheckboxes() {
         if(!displaygroup.includes(this.id)){
           displaygroup.push(group);
         }
-        console.log("onchecked: ", displaygroup);
         localStorage.displayedGroups = displaygroup;
         showMarkers(group);
       },

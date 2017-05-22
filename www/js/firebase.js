@@ -70,10 +70,10 @@ this.addUser = function() {
 this.finishLogin = function(result) {
   console.log("Logged in: ", result.username);
   localStorage.loggedInUser = result.username;
+  localStorage.loggedInUserMail = result.email;
   if(result.image == null || result.image == "placeholder"){
     localStorage.loggedInUserImg = defaultImg;
   } else localStorage.loggedInUserImg = result.image;
-  localStorage.loggedInUserMail = result.email;
   if(result.groups) { //sidenote, since it is object map, there will be undefined nulls
     localStorage.loggedInUserGroups = JSON.stringify(result.groups);
   } else if (localStorage.loggedInUserGroups) {

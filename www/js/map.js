@@ -61,7 +61,7 @@ newMarker = function(lat, lng, username, groups) {
         newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
         map.setCenter({lat:parseFloat(lat), lng:parseFloat(lng)});
     }
-    else if (localStorage.displayedGroups.includes(parseInt(group))) {
+    else if (localStorage.displayedGroups && localStorage.displayedGroups.includes(parseInt(group))) {
       newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
     }
     else {
