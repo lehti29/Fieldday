@@ -79,6 +79,7 @@ this.finishLogin = function(result) {
   } else if (localStorage.loggedInUserGroups) {
     localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
   }
+  localStorage.displayedGroups = [];
   fillUserView();
   initCheckboxes();
   $('#login').modal('hide');

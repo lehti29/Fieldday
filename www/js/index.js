@@ -68,8 +68,17 @@ function initCheckboxes() {
     Object.keys(groups).forEach((group)=>{
       if(groups[group] != null) {
         var groupnr = groups[group].groupId;
+        var checked = "";
+        if(localStorage.displayedGroups.includes(groupnr)){
+          checked = "checked";
+        }
+        /*for (var g in localStorage.displayedGroups){
+          if (groupnr === g){
+            checked = "checked";
+          }
+        }*/
         var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
-        groupnr, '"><label for="group', groupnr, '">Group ', groupnr, '</label></div></div>'].join("");
+        groupnr, '"', checked, '><label for="group', groupnr, '">Group ', groupnr, '</label></div></div>'].join("");
         groupboxes.append(div);
       }
     });
@@ -77,11 +86,13 @@ function initCheckboxes() {
     $('.checkbox').checkbox().checkbox({
       onChecked: function() {
         displaygroup.push(this.id)
+        localStorage.displayedGroups = displaygroup;
         showMarkers(this.id);
       },
       onUnchecked: function() {
         var pos = displaygroup.indexOf(this.id);
         displaygroup.splice(pos, 1); //removes 1 item on index pos
+        localStorage.displayedGroups = displaygroup;
         hideMarkers(this.id);
       },
       onChange: function() {
@@ -119,6 +130,7 @@ initLogin = function() {
 
 logout = function() {
   localStorage.clear();
+  markers = [];
   initLogin();
 }
 
