@@ -273,86 +273,67 @@ function updatePosition(lat, lng, username){
 }
 
 function Chat() {
-  this.theMessages = document.getElementById('messages');
-  this.messageForm = document.getElementById('message-form');
-  this.messageInput = document.getElementById('message');
-  this.submitButton = document.getElementById('submitChat');
-  this.userName = document.getElementById('user-name');
-  this.groupName = document.getElementById('groupName');
-  // Saves message on formsubmit'en.
-  this.messageForm.addEventListener('submitChat', this.saveMessage.bind(this));
-  this.loadMessages();
-  //Name in topbar
-  this.groupName.innerHTML="Group Chat";
+  if(localStorage.loggedInUser) {
+    this.theMessages = document.getElementById('messages');
+    this.messageForm = document.getElementById('message-form');
+    this.messageInput = document.getElementById('message');
+    this.submitButton = document.getElementById('submitChat');
+    this.userName = document.getElementById('user-name');
+    this.groupName = document.getElementById('groupName');
+    this.loadMessages();
+  } else { //not logged in
+    window.location= "index.html"
+  }
 }
 
 loadMessages = function() {
-  this.messagesRef.off();
-  var setMessage = function(data){
-    var val = data.val();
-    this.displayMessage(data.key, val.name, val.text); 
-  }.bind(this);
+  //this.messagesRef.off(); //?
+  this.messagesRef.limitToLast(20).on('child_changed', setMessage); //makes it double called sending message
   this.messagesRef.limitToLast(20).on('child_added', setMessage);
-  this.messagesRef.limitToLast(20).on('child_changed', setMessage);
 };
+
+
+setMessage = function(data){
+  var val = data.val();
+  //console.log("setMessage: ", val);
+  this.displayMessage(data.key, val.name, val.text); 
+}
 
 saveMessage = function() {
   if (this.messageInput.value) {
     var currentUser = localStorage.loggedInUser;
-    //Add message
     this.messagesRef.push({
       name: currentUser,
       text: this.messageInput.value,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
     }).then(function() {
-      //Clear message text in textfield
-      var mess = this.messageInput;
-      mess.value = '';
+      this.messageInput.value = '';
     }.bind(this)).catch(function(error) {
       console.error("Error when writing new messages to database", error);
     });
   }
 };
 
-Chat.MESSAGE_USER =
-'<div style="min-height: 4em; width: 100%; clear: both;">'+
-'<div class="message-container ui message ownMessage" id="message-container">' +
-'<div class="message"></div>' +
-'</div>'+
-'</div>';
+MESSAGE_USER =
+['<div class="oneRowMsg" id="', '' ,'"><div class="message-container ui message ownMessage" id="message-container">', '' , ' </div></div>'];
 
-Chat.MESSAGE_NOT_USER =
-'<div style="min-height: 4em; width: 100%; margin-bottom: 0.4em; clear: both;">'+
-'<div class="name"></div>' +
-'<div class="message-container ui grey message" id="message-container">' +
-'<div class="message"></div>' +
-'</div>'+
-'</div>';
+MESSAGE_NOT_USER =
+['<div class="oneRowMsg" id="', '' ,'"><div class="name">', '', '</div><div class="message-container ui grey message" id="message-container">', '' , ' </div></div>'];
 
 displayMessage = function(key, name, text) {
-  var div = document.getElementById(key);
-  // Create message if not existing
-  if (!div) {
-    var container = document.createElement('div');
-    //Color the "bubbles" depending on user or others...
+  if(!document.getElementById(key)) {
     if(name == localStorage.loggedInUser){
-      container.innerHTML = Chat.MESSAGE_USER;
+      var htmlContent = MESSAGE_USER;
+      htmlContent[3] = text;
     }else{
-      container.innerHTML = Chat.MESSAGE_NOT_USER;
+      var htmlContent = MESSAGE_NOT_USER;
+      htmlContent[3] = name;
+      htmlContent[5] = text;
     }
-    div = container.firstChild;
-    div.setAttribute('id', key);
-    this.theMessages.appendChild(div);
+    htmlContent[1] = key;
+    var container = document.createElement('div');
+    container.innerHTML = htmlContent.join("");
+    this.theMessages.appendChild(container.firstChild);
+    this.theMessages.scrollTop = this.theMessages.scrollHeight;
   }
-  if(name != localStorage.loggedInUser){
-    div.querySelector('.name').textContent = name;
-  }
-  var messageElement = div.querySelector('.message');  
-  if (text) { 
-    messageElement.textContent = text;
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');    
-  }
-  // Scroll til last message
-  div.classList.add('visible');
-  this.theMessages.scrollTop = this.theMessages.scrollHeight;
 };
