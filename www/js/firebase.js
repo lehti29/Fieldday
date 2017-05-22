@@ -19,8 +19,7 @@ var imageStorageRef = storage.child('images');
 var defaultImg = "../img/avatar-default.jpg";
 
 this.getUserImage = function(username) {
-  var promise = checkUser(username);
-  return promise.then((result)=>{
+  return checkUser(username).then((result)=>{
     if(!result.image || result.image == 'placeholder') {
       return defaultImg;
     } else {
@@ -49,7 +48,6 @@ this.addUser = function() {
         url = snapshot.downloadURL;
         console.log('Got download URL ', url);
         usersRef.child(username).set({
-          userId: 1,
           username: username,
           password: password,
           email: email,
@@ -76,23 +74,19 @@ this.finishLogin = function(result) {
     localStorage.loggedInUserImg = defaultImg;
   } else localStorage.loggedInUserImg = result.image;
   localStorage.loggedInUserMail = result.email;
-  if(result.groups) {
-    console.log("there are groups! ")
-    console.log(result.groups)
+  if(result.groups) { //sidenote, since it is object map, there will be undefined nulls
     localStorage.loggedInUserGroups = JSON.stringify(result.groups);
-    console.log(JSON.stringify(result.groups));
-    console.log(result.groups)
   } else if (localStorage.loggedInUserGroups) {
     localStorage.removeItem("loggedInUserGroups"); //there's a bug that makes the var = "undefined", not undefined
   }
   fillUserView();
+  initCheckboxes();
   $('#login').modal('hide');
-  checkMarkers();
+  //checkMarkers();
 }
 
 this.login = function(username, password) {
-  var promise = checkUser(username, password);
-  promise.then((result) => {
+  checkUser(username, password).then((result) => {
     if(result) {
       finishLogin(result);
     } else{
@@ -211,7 +205,6 @@ coordsRef.on("child_added", function(snapshot) {
   var prom = checkUser(username);
   prom.then(function(result) {
     if(result){
-      console.log("Result.groups", result.groups);
       newMarker(lat, lng, result.username, result.groups);
     }
     else

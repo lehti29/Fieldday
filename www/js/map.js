@@ -46,60 +46,32 @@ hideMarkers = function(groupNumber){
   });
 }
 
-newMarker = function(lat, lng, usrname, groups) {
-  //console.log("lat: " + lat + " lng: " + lng);
-  var firstLetter = usrname.charAt(0).toUpperCase();
+newMarker = function(lat, lng, username, groups) {
+  var firstLetter = username.charAt(0).toUpperCase();
   for (var group in groups){
-    //console.log("group: ", JSON.stringify(group));
     var groupNumber = group.charAt(group.length - 1);
-    //console.log("groupnumber: ", groupNumber);
     if(groupNumber == null) return;
     var newMarker = new google.maps.Marker({
         position: {lat: parseFloat(lat), lng: parseFloat(lng)},
         map: map,
         animation: google.maps.Animation.DROP,
-        title: JSON.stringify(usrname)
+        title: JSON.stringify(username)
     });
-    if(usrname == localStorage.loggedInUser){
+    if(username == localStorage.loggedInUser){
       newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
     }
     else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
     google.maps.event.addListener(newMarker, 'click', function() {
-      var imagePromise = getUserImage(usrname);
-      imagePromise.then((result)=>{
-        var infoString = ["<b>User: </b>", JSON.stringify(usrname), 
+      getUserImage(username).then((result)=>{
+        var infoString = ["<b>User: </b>", JSON.stringify(username), 
         '<br><img src="', result, '" height="100" width="100" alt="Image">'].join("");
         infowindow.setContent(infoString);
         infowindow.open(map, newMarker);
       })
     });
     newMarker.setVisible(false);
-    markers[groupNumber].push({"marker" : newMarker, "username" : usrname});
-    console.log("markers ", markers[groupNumber]);
+    markers[groupNumber].push({"marker" : newMarker, "username" : username});
   }
-    
-  /*
-  var newMarker = new google.maps.Marker({
-      position: {lat: parseFloat(lat), lng: parseFloat(lng)},
-      map: map,
-      animation: google.maps.Animation.DROP,
-      title: JSON.stringify(usrname)
-  });
-  if(usrname == localStorage.loggedInUser){
-    newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
-  }
-  else newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + firstLetter + '.png');
-  google.maps.event.addListener(newMarker, 'click', function() {
-    var imagePromise = getUserImage(usrname);
-    imagePromise.then((result)=>{
-      var infoString = ["<b>User: </b>", JSON.stringify(usrname), 
-      '<br><img src="', result, '" height="100" width="100" alt="Image">'].join("");
-      infowindow.setContent(infoString);
-      infowindow.open(map, newMarker);
-    })
-  });
-  markers.push({"marker" : newMarker, "username" : usrname});
-  */
 }
 
 //DOESN'T WOOOORK. IT CAN'T FIND THE MARKER IN MARKERS

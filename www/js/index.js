@@ -42,39 +42,37 @@
     }
   };
 
-  var displaygroup = [];
+var displaygroup = [];
 
-  function initSidebar() {
-    $('.ui.sidebar').first()
-    .sidebar('setting', 'transition', 'overlay')
-    .sidebar('setting', 'mobileTransition', 'overlay')
-    .sidebar('attach events', '#sidebarToggle');
+function initSidebar() {
+  $('.ui.sidebar').first()
+  .sidebar('setting', 'transition', 'overlay')
+  .sidebar('setting', 'mobileTransition', 'overlay')
+  .sidebar('attach events', '#sidebarToggle');
 
-    $("#sidebarToggle")
-    .removeClass('disabled');
-  }
+  $("#sidebarToggle")
+  .removeClass('disabled');
+}
 
-  function userAddGroup() {
+function userAddGroup() {
   //TODO!
 }
 
 function initCheckboxes() {
-  if(!localStorage.loggedInUserGroups) {
-    $('#groupBoxes').append('<button class="ui olive button" onclick="addUserToGroup();"><i class="plus icon"></i> Join group</button>');
-  } else {
+  var groupboxes = $('#groupBoxes');
+  groupboxes.html("");
+  console.log("huhm")
+  if(localStorage.loggedInUserGroups) {
     var groups = JSON.parse(localStorage.loggedInUserGroups);
-    var groupboxes = $('#groupBoxes');
-    groupboxes.html("");
-    console.log("groups: ", groups);
+    console.log("HERHEREHEHER: ", groups);
     Object.keys(groups).forEach((group)=>{
       if(groups[group] != null) {
         var groupnr = groups[group].groupId;
         var div = ['<div class="inline field"><div class="ui checkbox"><input type="checkbox" id="group', 
         groupnr, '"><label for="group', groupnr, '">Group ', groupnr, '</label></div></div>'].join("");
-        $('#groupBoxes').append(div);
+        groupboxes.append(div);
       }
     });
-    $('#groupBoxes').append('<button class="ui olive button" onclick="addUserToGroup();"><i class="plus icon"></i> Join group</button>');
     
     $('.checkbox').checkbox().checkbox({
       onChecked: function() {
@@ -91,6 +89,7 @@ function initCheckboxes() {
       }
     });
   }
+  groupboxes.append('<button class="ui olive button" onclick="addUserToGroup();"><i class="plus icon"></i> Join group</button>');
 }
 
 fillUserView = function() {
@@ -104,7 +103,7 @@ initLogin = function() {
     fillUserView();    
     initCheckboxes();
   } else {
-
+    console.log("init new login")
     $('.modal.coupled').modal({
       allowMultiple: true
     })
@@ -115,16 +114,16 @@ initLogin = function() {
       ;
       $('#createnewuser')
       .modal('attach events', '#createnewuserbutton');
-    }
   }
+}
 
-  logout = function() {
-    localStorage.clear();
-    initLogin();
-  }
-
-
+logout = function() {
+  localStorage.clear();
   initLogin();
-  initSidebar();
+}
 
-  app.initialize();
+
+initLogin();
+initSidebar();
+
+app.initialize();
