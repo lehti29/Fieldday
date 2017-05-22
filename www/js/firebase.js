@@ -267,11 +267,12 @@ loadMessages = function() {
 
 saveMessage = function() {
   if (this.messageInput.value) {
-    var currentUser = anvandaren;
+    var currentUser = localStorage.loggedInUser;
     //Add message
     this.messagesRef.push({
       name: currentUser,
       text: this.messageInput.value,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
     }).then(function() {
       //Clear message text in textfield
       var mess = this.messageInput;
@@ -283,7 +284,6 @@ saveMessage = function() {
   }
 };
 
-//Display messages (Eventually Margin Bottom 1em) style="background-color: #ee82ee; float: right; margin-top: 8px; max-width: 70%;"
 Chat.MESSAGE_USER =
 '<div style="min-height: 4em; width: 100%; clear: both;">'+
 '<div class="message-container ui message ownMessage" id="message-container">' +
@@ -305,7 +305,7 @@ displayMessage = function(key, name, text) {
   if (!div) {
     var container = document.createElement('div');
     //Color the "bubbles" depending on user or others...
-    if(name == anvandaren){
+    if(name == localStorage.loggedInUser){
       container.innerHTML = Chat.MESSAGE_USER;
     }else{
       container.innerHTML = Chat.MESSAGE_NOT_USER;
@@ -314,7 +314,7 @@ displayMessage = function(key, name, text) {
     div.setAttribute('id', key);
     this.theMessages.appendChild(div);
   }
-  if(name != anvandaren){
+  if(name != localStorage.loggedInUser){
     div.querySelector('.name').textContent = name;
   }
   var messageElement = div.querySelector('.message');  
@@ -323,30 +323,7 @@ displayMessage = function(key, name, text) {
     messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');    
   }
   // Scroll til last message
-  //---document.getElementById(key).style.width = "100%";
-  //document.getElementById(key).style.display = "inline-block"; 
   div.classList.add('visible');
   this.theMessages.scrollTop = this.theMessages.scrollHeight;
   console.log("displayMessage");
 };
-
-//Set user for now....
-var anvandaren;
-/*function popup() {
-  var person = prompt("Username:", "Write here");
-  if(person == null || person == "") {
-    console.log("User cancelled the prompt"); //Nåt slags felmeddelande....behövs nog inte skrivas ut....
-  }else{
-    anvandaren = person; //Användaren sparas här (namnet)
-  }
-  console.log(anvandaren);
-}*/
-var anvandaren = localStorage.loggedInUser;
-
-//Test för 1:a meddelandet...
-function sendTestMess() {
-  this.messagesRef.push({
-    name: "Test user",
-    text: "Japp, det funkar"
-  });
-}
