@@ -86,16 +86,21 @@ newMarker = function(lat, lng, username, groups) {
 }
 
 //DOESN'T WOOOORK. IT CAN'T FIND THE MARKER IN MARKERS
-deleteMarker = function(lat, lng, username){
-  var result = $.grep(markers, function(e){ return e.username === username; });
-  if(result.length == 1){
-    console.log("delete")
-    var toBeDeleted = result[0].marker;
-    toBeDeleted.setMap(null);
-    markers.delete(result[0]);
+deleteMarkers = function(){
+  for(var i = 0; i < markers.length; i++){
+    if(markers[i] != null){
+      console.log("bb ", markers[i]);
+      var list = markers[i];
+      list.forEach(function(entry) {
+      console.log("Entry: ", entry);
+      entry.marker.setMap(null);  
+    });
+    }
   }
+  deleteMarkers = [];
 }
 updateMarker = function(lat, lng, username, groups){
+  console.log("markers: ", markers);
   for (var group in groups){
     if(group == null) continue;
     var result = $.grep(markers[group], function(e){ return e.username === username; });

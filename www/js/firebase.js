@@ -267,7 +267,7 @@ coordsRef.on("child_removed", function(snapshot) {
     var lng = snapshot.val().lng;
     var userid = snapshot.val().username;
     console.log("removed ", snapshot.val());
-    deleteMarker(lat, lng, username);
+    //deleteMarker(lat, lng, username);
   }
 });
 

@@ -135,7 +135,7 @@ initLogin = function() {
 
 logout = function() {
   localStorage.clear();
-  markers = [];
+  deleteMarkers();
   initLogin();
 }
 
