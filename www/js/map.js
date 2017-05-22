@@ -26,22 +26,18 @@ initMap = function() {
     });
 }
 showMarkers = function(groupNumber){
-  console.log(groupNumber);
-
+  console.log("groupnumber: ", groupNumber);
   var gnumber = groupNumber;
-  console.log("Show markers: ", markers, " gnumber: ", gnumber);
-  console.log("ma: ", markers[parseInt(gnumber)-1]);
   markers[gnumber].forEach(function(entry) {
-    console.log("Entry: ", entry);
     if(!entry.marker.getVisible()){
       entry.marker.setVisible(true);
     }   
   });
 }
 hideMarkers = function(groupNumber){
-  var gnumber = groupNumber.substring(5);
+  console.log("groupnumber: ", groupNumber);
+  var gnumber = groupNumber;
   markers[gnumber].forEach(function(entry) {
-    console.log("Entry: ", entry);
     if(entry.marker.getVisible() && entry.username != localStorage.loggedInUser){
       entry.marker.setVisible(false);
     } 
@@ -51,14 +47,16 @@ hideMarkers = function(groupNumber){
 newMarker = function(lat, lng, username, groups) {
   var firstLetter = username.charAt(0).toUpperCase();
   for (var group in groups){
-    if(group == null) return;
+    if(group == null && username != localStorage.loggedInUser) {
+      console.log("groups?");
+      return;
+    }
     var newMarker = new google.maps.Marker({
         position: {lat: parseFloat(lat), lng: parseFloat(lng)},
         map: map,
         animation: google.maps.Animation.DROP,
         title: JSON.stringify(username)
     });
-    
     if(username == localStorage.loggedInUser ){
         newMarker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
         map.setCenter({lat:parseFloat(lat), lng:parseFloat(lng)});
@@ -85,11 +83,9 @@ newMarker = function(lat, lng, username, groups) {
   }
 }
 
-//DOESN'T WOOOORK. IT CAN'T FIND THE MARKER IN MARKERS
 deleteMarkers = function(){
   for(var i = 0; i < markers.length; i++){
     if(markers[i] != null){
-      console.log("bb ", markers[i]);
       var list = markers[i];
       list.forEach(function(entry) {
       console.log("Entry: ", entry);
@@ -100,7 +96,6 @@ deleteMarkers = function(){
   deleteMarkers = [];
 }
 updateMarker = function(lat, lng, username, groups){
-  console.log("markers: ", markers);
   for (var group in groups){
     if(group == null) continue;
     var result = $.grep(markers[group], function(e){ return e.username === username; });
@@ -108,7 +103,6 @@ updateMarker = function(lat, lng, username, groups){
       var previousMarker = result[0].marker;
       var updated = new google.maps.LatLng(lat, lng);
       previousMarker.setPosition(updated);
-      //console.log("New position for ", username, " in group: ", group);
     }
     else if(result.length == 0){
       console.log("No Marker from that user was found, creating a marker");
@@ -116,19 +110,6 @@ updateMarker = function(lat, lng, username, groups){
     }
     else console.log("More than one marker from that user was found");
   }
-}
-
-checkMarkers = function(){
-  /*for(var i = 0; i < markers.length; i++){
-    if(markers[i].username == localStorage.loggedInUser){
-      console.log("this is me");
-      markers[i].marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-blank.png');
-    }
-    else {
-      var letter = markers[i][].username.charAt(0).toUpperCase();
-      markers[i].marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/' + letter + '.png');
-    }
-  }*/
 }
 
 toggleInterval = function() {

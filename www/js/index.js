@@ -85,7 +85,6 @@ function initCheckboxes() {
     
     $('.checkbox').checkbox().checkbox({
       onChecked: function() {
-        console.log("before onchecked: ", displaygroup);
         var group = this.id.split("group")[1];
         if(!displaygroup.includes(this.id)){
           displaygroup.push(group);
@@ -98,7 +97,8 @@ function initCheckboxes() {
         var pos = displaygroup.indexOf(this.id);
         displaygroup.splice(pos, 1); //removes 1 item on index pos
         localStorage.displayedGroups = displaygroup;
-        hideMarkers(this.id);
+        var group = this.id.split("group")[1];
+        hideMarkers(group);
       },
       onChange: function() {
         console.log("Change called on child: ", this.id, ' with displaygroup: ', displaygroup);

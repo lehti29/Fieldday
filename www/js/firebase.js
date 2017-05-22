@@ -83,7 +83,7 @@ this.finishLogin = function(result) {
   fillUserView();
   initCheckboxes();
   $('#login').modal('hide');
-  //checkMarkers();
+  location.reload();
 }
 
 this.login = function(username, password) {
