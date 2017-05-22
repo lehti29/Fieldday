@@ -283,10 +283,10 @@ saveMessage = function() {
   }
 };
 
-//Display messages (Eventually Margin Bottom 1em)
+//Display messages (Eventually Margin Bottom 1em) style="background-color: #ee82ee; float: right; margin-top: 8px; max-width: 70%;"
 Chat.MESSAGE_USER =
 '<div style="min-height: 4em; width: 100%; clear: both;">'+
-'<div class="message-container" id="message-container" style="background-color: #ee82ee; float: right; margin-top: 8px; max-width: 70%;">' +
+'<div class="message-container ui message ownMessage" id="message-container">' +
 '<div class="message"></div>' +
 '</div>'+
 '</div>';
@@ -294,7 +294,7 @@ Chat.MESSAGE_USER =
 Chat.MESSAGE_NOT_USER =
 '<div style="min-height: 4em; width: 100%; margin-bottom: 0.4em; clear: both;">'+
 '<div class="name"></div>' +
-'<div class="message-container" id="message-container" style="background-color: #eaeaea; max-width: 70%;">' +
+'<div class="message-container ui grey message" id="message-container">' +
 '<div class="message"></div>' +
 '</div>'+
 '</div>';

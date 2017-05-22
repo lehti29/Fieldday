@@ -55,10 +55,12 @@ crossorigin="anonymous"></script>
 
 <body onload="Chat();">
   <div class="contentChat">
-    <div class="chatTopbar">
-      <a href="index.html"><span class="closeChat" title="Close Chat"><i class="chevron left small icon"></i></span></a>
+    <h2 class="chatTopbar">
+      <a href="index.html" class="closeChat">
+        <i class="chevron left icon"></i>
+      </a>
       <span id="groupName"></span>
-    </div>
+    </h2>
     <div id="messages"></div>    
     <div id="message-form">
       <div id="textAndButton">
@@ -66,7 +68,7 @@ crossorigin="anonymous"></script>
           <input class="text-input" type="text" id="message" placeholder="Message...">
         </div>
         <div id="buttonArea"> 
-          <button id="submitChat"  type="submit"  onclick="saveMessage()">
+          <button class="circular ui icon button violet" id="submitChat"  type="submit"  onclick="saveMessage()">
             <i class="big send icon"></i>
           </button>
         </div>
