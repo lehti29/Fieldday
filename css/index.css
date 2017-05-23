@@ -75,6 +75,11 @@ button.ui.icon.largerButtons {
 	color: red;
 }
 
+.invalidData {
+	color: red;
+	margin-top: 10px;
+}
+
 .hide {
 	display: none;
 }

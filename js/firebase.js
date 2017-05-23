@@ -28,40 +28,70 @@ this.getUserImage = function(username) {
   });
 }
 
-//Add a user to the database
+//these are event handlers that will hide an error message when user starts typing in create user
+$('#newusername').on('input', function(){
+  $('#invalidUsername').hide();
+  $('#createUserMessage').hide();//in case we tried to create an user with same uname
+});
+
+$('#newpassword').on('input', function(){
+  $('#invalidPassword').hide();
+});
+
+$('#newemail').on('input', function(){
+  $('#invalidEmail').hide();
+});
+
+$('#newuserimage').on('input', function(){
+  $('#invalidImage').hide();
+});
+
+//when starts typing in login
+$('#username').on('input', function(){
+  $('#wrongpassword').hide();
+})
+
+$('#password').on('input', function(){
+  $('#wrongpassword').hide();
+})
+
+
+//Add a user to the database, with data validation
 this.addUser = function() {
   var username = document.getElementById('newusername').value;
   var password = document.getElementById('newpassword').value;
   var email = document.getElementById('newemail').value;
   var file = document.getElementById('newuserimage').files[0];
-  var promise = checkUser(username, password);
-  promise.then((result) => {
-    if(result) {
-      $('#createUserMessage').show();
-    } else { //if no user, we can create
-      var url = "";
-      imageStorageRef.child(username + "/" + file.name).put(file).then((snapshot)=> {
-        console.log('Uploaded a file!: ', file.name);
-        url = snapshot.downloadURL;
-        console.log('Got download URL ', url);
-        usersRef.child(username).set({
-          username: username,
-          password: password,
-          email: email,
-          groups: {},
-          image: url
+  if(!username || /[\.#\$\[\]]/.test(username)) $('#invalidUsername').show();
+  else if(!password) $('#invalidPassword').show();
+  else if(!email) $('#invalidEmail').show()
+  else if(!file) $('#invalidImage').show()
+  else {
+    checkUser(username).then((result) => {
+      if(result) {
+        $('#createUserMessage').show();
+      } else { //if no user, we can create
+        imageStorageRef.child(username + "/" + file.name).put(file).then((snapshot)=> {
+          usersRef.child(username).set({
+            username: username,
+            password: password,
+            email: email,
+            groups: {},
+            image: snapshot.downloadURL
+          });
+          finishLogin({
+            "username":username, 
+            "email": email,
+            "image": snapshot.downloadURL
+          });
+          addUsersCoords(username, 0, 0);
         });
-        finishLogin({
-          "username":username, 
-          "email": email,
-          "image": url
-        });
-        addUsersCoords(username, 0, 0);
-      });
-      $('#createnewuser').hide();
-      $("#createusersuccess").show();
-    }
-  })
+        $('#createnewuser').hide();
+        $("#createusersuccess").show();
+      }
+    })
+    //return true;
+  }
 };
 
 this.finishLogin = function(result) {
@@ -84,13 +114,17 @@ this.finishLogin = function(result) {
 }
 
 this.login = function(username, password) {
-  checkUser(username, password).then((result) => {
-    if(result) {
-      finishLogin(result);
-    } else{
-      $("#wrongpassword").show();
-    }
-  })
+  if(!password) {
+    $("#wrongpassword").show();
+  } else {
+    checkUser(username, password).then((result) => {
+      if(result) {
+        finishLogin(result);
+      } else{
+        $("#wrongpassword").show();
+      }
+    })
+  }
 }
 
 //Checks whether or not the user is in the database and if the password is correct
@@ -295,7 +329,6 @@ loadMessages = function() {
 
 setMessage = function(data){
   var val = data.val();
-  //console.log("setMessage: ", val);
   this.displayMessage(data.key, val.name, val.text); 
 }
 

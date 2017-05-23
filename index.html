@@ -78,21 +78,25 @@ crossorigin="anonymous"></script>
             <div class="modal-content">
                 <div class="container">
                     <h3>Enter credentials to create user</h3>
+                    <div class="invalidData hide" id="invalidUsername">Invalid username, can't contain ".", "#", "$", "[", or "]"</div>
                     <label><b>Username</b></label>
                     <input type="text" placeholder="Enter Username" id="newusername" required>
 
+                    <div class="invalidData hide" id="invalidPassword">Can't be empty:</div>
                     <label><b>Password</b></label>
                     <input type="password" placeholder="Enter Password" id="newpassword" required>
 
+                    <div class="invalidData hide" id="invalidEmail">Can't be empty:</div>
                     <label><b>Email</b></label>
                     <input type="text" placeholder="Enter Email" id="newemail" required>
 
+                    <div class="invalidData hide" id="invalidImage">Please submit an image:</div>
                     <input type="file" placeholder="Upload Image" id="newuserimage" required>
 
-                    <p id="createUserMessage" class="hide">That user already exists</p>
+                    <p id="createUserMessage" class="invalidData hide">That user already exists</p>
 
                     <div class="actions">
-                        <button type="submit" class="ui approve olive right floated button" type="button" onclick="addUser();">Create User</button>
+                        <button type="submit" class="ui olive right floated button" type="button" onclick="addUser();">Create User</button>
                         <button type="button" class="ui cancel button leftmargin loginCancelButton">Cancel</button>
                     </div>
                 </div>
